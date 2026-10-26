@@ -1,5 +1,5 @@
-import { executeAIRequest, getAIStatus, checkRateLimit } from '../src/server/aiHandler';
-import { extractBearerToken, verifyFirebaseIdToken } from '../src/server/authVerifier';
+import { executeAIRequest, getAIStatus, checkRateLimit } from '../src/server/aiHandler.js';
+import { extractBearerToken, verifyFirebaseIdToken } from '../src/server/authVerifier.js';
 
 /**
  * Standard Serverless Function Handler (Node.js / Vercel / Netlify / Express)
