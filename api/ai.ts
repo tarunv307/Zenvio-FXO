@@ -1,4 +1,5 @@
 import { executeAIRequest, getAIStatus, checkRateLimit } from '../src/server/aiHandler';
+import { extractBearerToken, verifyFirebaseIdToken } from '../src/server/authVerifier';
 
 /**
  * Standard Serverless Function Handler (Node.js / Vercel / Netlify / Express)
@@ -13,13 +14,30 @@ export default async function handler(req: any, res: any) {
     return res.status(200).end();
   }
 
-  // Rate Limiting
-  const clientIp =
-    req.headers['x-forwarded-for']?.toString().split(',')[0] ||
-    req.socket?.remoteAddress ||
-    '127.0.0.1';
+  // Optional Authentication Verification
+  const bearerToken = extractBearerToken(req.headers['authorization']);
+  let authenticatedUser = null;
 
-  if (!checkRateLimit(clientIp)) {
+  if (bearerToken) {
+    const expectedProject = process.env.VITE_FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID;
+    const verification = await verifyFirebaseIdToken(bearerToken, expectedProject);
+    if (!verification.valid) {
+      return res.status(401).json({
+        ok: false,
+        error: `Authentication failed: ${verification.error}`,
+      });
+    }
+    authenticatedUser = verification.user;
+  }
+
+  // Rate Limiting (Authenticated users keyed by UID, guests by IP)
+  const clientIdentifier = authenticatedUser
+    ? `user:${authenticatedUser.uid}`
+    : req.headers['x-forwarded-for']?.toString().split(',')[0] ||
+      req.socket?.remoteAddress ||
+      '127.0.0.1';
+
+  if (!checkRateLimit(clientIdentifier)) {
     return res.status(429).json({
       ok: false,
       error: 'Rate limit exceeded. Maximum 20 requests per minute allowed.',

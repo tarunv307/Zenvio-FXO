@@ -7,6 +7,9 @@ import { CategoryPage } from './pages/CategoryPage';
 import { ToolPage } from './pages/ToolPage';
 
 import { RedirectHandler } from './pages/RedirectHandler';
+import { AuthProvider } from './context/AuthContext';
+import { SignInPage } from './pages/auth/SignInPage';
+import { SignUpPage } from './pages/auth/SignUpPage';
 
 function PageLoader() {
   return (
@@ -21,22 +24,26 @@ function PageLoader() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
-          {/* Standalone Dynamic QR Redirect Route */}
-          <Route path="/r/:code" element={<RedirectHandler />} />
+    <AuthProvider>
+      <BrowserRouter>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            {/* Standalone Dynamic QR Redirect Route */}
+            <Route path="/r/:code" element={<RedirectHandler />} />
 
-          {/* Main App Routes */}
-          <Route path="/" element={<RootLayout />}>
-            <Route index element={<HomePage />} />
-            <Route path="tools" element={<AllToolsPage />} />
-            <Route path="tools/:slug" element={<ToolPage />} />
-            <Route path="category/:categoryId" element={<CategoryPage />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Route>
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
+            {/* Main App Routes */}
+            <Route path="/" element={<RootLayout />}>
+              <Route index element={<HomePage />} />
+              <Route path="tools" element={<AllToolsPage />} />
+              <Route path="tools/:slug" element={<ToolPage />} />
+              <Route path="category/:categoryId" element={<CategoryPage />} />
+              <Route path="auth/sign-in" element={<SignInPage />} />
+              <Route path="auth/sign-up" element={<SignUpPage />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Route>
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }

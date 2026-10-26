@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.46.1",
+    "firebase": "^13.1.0",
     "lucide-react": "^0.462.0",
     "pdf-lib": "^1.17.1",
     "qrcode": "^1.5.4",

@@ -8,6 +8,7 @@ import {
 import { TOOLS } from '../../data/tools';
 import { searchTools } from '../../utils/search';
 import { debounce } from '../../utils/file';
+import { useAuth } from '../../context/AuthContext';
 
 // ─── Logo ─────────────────────────────────────────────────────────────────────
 
@@ -187,6 +188,7 @@ const NAV_CATEGORIES = [
 // ─── Main Header ──────────────────────────────────────────────────────────────
 
 export function Header() {
+  const { user, signOut } = useAuth();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [categoriesOpen, setCategoriesOpen] = React.useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = React.useState(false);
@@ -305,18 +307,7 @@ export function Header() {
 
             {/* Auth (Desktop) */}
             <div className="hidden md:flex items-center gap-2">
-              <Link
-                to="/auth/sign-in"
-                className="px-3.5 py-1.5 text-sm font-semibold text-[#475569] hover:text-[#0F172A] transition-colors"
-              >
-                Sign In
-              </Link>
-              <Link
-                to="/auth/sign-up"
-                className="px-4 py-1.5 text-sm font-semibold bg-[#2563EB] text-white rounded-lg hover:bg-[#1D4ED8] transition-colors shadow-sm"
-              >
-                Sign Up
-              </Link>
+              <AuthHeaderItem user={user} onSignOut={signOut} />
             </div>
           </div>
 
@@ -355,20 +346,43 @@ export function Header() {
                 ))}
               </div>
               <div className="mt-4 pt-4 border-t border-[#E2E8F0] flex flex-col gap-2">
-                <Link
-                  to="/auth/sign-in"
-                  onClick={() => setMobileOpen(false)}
-                  className="w-full px-4 py-2 text-sm font-semibold text-center text-[#475569] border border-[#E2E8F0] rounded-lg hover:bg-slate-50"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  to="/auth/sign-up"
-                  onClick={() => setMobileOpen(false)}
-                  className="w-full px-4 py-2 text-sm font-semibold text-center text-white bg-[#2563EB] rounded-lg hover:bg-[#1D4ED8]"
-                >
-                  Sign Up
-                </Link>
+                {user ? (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-lg">
+                      <User className="size-4 text-[#2563EB]" />
+                      <span className="text-sm font-semibold text-[#0F172A] truncate">
+                        {user.displayName || user.email}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => {
+                        signOut();
+                        setMobileOpen(false);
+                      }}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold text-[#DC2626] border border-red-200 rounded-lg hover:bg-red-50"
+                    >
+                      <LogOut className="size-4" />
+                      Sign Out
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <Link
+                      to="/auth/sign-in"
+                      onClick={() => setMobileOpen(false)}
+                      className="w-full px-4 py-2 text-sm font-semibold text-center text-[#475569] border border-[#E2E8F0] rounded-lg hover:bg-slate-50"
+                    >
+                      Sign In
+                    </Link>
+                    <Link
+                      to="/auth/sign-up"
+                      onClick={() => setMobileOpen(false)}
+                      className="w-full px-4 py-2 text-sm font-semibold text-center text-white bg-[#2563EB] rounded-lg hover:bg-[#1D4ED8]"
+                    >
+                      Sign Up
+                    </Link>
+                  </>
+                )}
               </div>
             </nav>
           </div>
@@ -381,7 +395,7 @@ export function Header() {
 // ─── Header Auth State ──────────────────────────────────────────────────────────
 
 interface AuthHeaderItemProps {
-  user: { email: string; displayName?: string } | null;
+  user: { email: string | null; displayName?: string | null; photoURL?: string | null } | null;
   onSignOut: () => void;
 }
 
@@ -391,10 +405,10 @@ export function AuthHeaderItem({ user, onSignOut }: AuthHeaderItemProps) {
   if (!user) {
     return (
       <div className="flex items-center gap-2">
-        <Link to="/auth/sign-in" className="px-4 py-1.5 text-sm font-semibold text-[#475569] hover:text-[#0F172A]">
+        <Link to="/auth/sign-in" className="px-3.5 py-1.5 text-sm font-semibold text-[#475569] hover:text-[#0F172A] transition-colors">
           Sign In
         </Link>
-        <Link to="/auth/sign-up" className="px-4 py-1.5 text-sm font-semibold bg-[#2563EB] text-white rounded-lg hover:bg-[#1D4ED8]">
+        <Link to="/auth/sign-up" className="px-4 py-1.5 text-sm font-semibold bg-[#2563EB] text-white rounded-lg hover:bg-[#1D4ED8] transition-colors shadow-sm">
           Sign Up
         </Link>
       </div>
@@ -406,11 +420,17 @@ export function AuthHeaderItem({ user, onSignOut }: AuthHeaderItemProps) {
       <button
         onClick={() => setOpen(!open)}
         onBlur={() => setTimeout(() => setOpen(false), 200)}
-        className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+        className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl hover:bg-slate-100 transition-colors"
         aria-expanded={open}
         aria-haspopup="menu"
       >
-        <User className="size-4 text-[#475569]" />
+        {user.photoURL ? (
+          <img src={user.photoURL} alt={user.displayName || 'User'} className="size-6 rounded-full border border-blue-200 object-cover" />
+        ) : (
+          <div className="size-6 rounded-full bg-blue-100 text-[#2563EB] flex items-center justify-center text-xs font-bold">
+            {(user.displayName || user.email || 'U').charAt(0).toUpperCase()}
+          </div>
+        )}
         <span className="text-sm font-semibold text-[#0F172A] max-w-[120px] truncate">
           {user.displayName || user.email}
         </span>
