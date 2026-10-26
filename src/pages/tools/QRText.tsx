@@ -20,7 +20,7 @@ export function QRText() {
       width: size,
       margin: 2,
       color: {
-        dark: '#1e293b',
+        dark: '#000000',
         light: '#ffffff',
       },
     })

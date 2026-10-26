@@ -37,18 +37,18 @@ export function JSONFormatter() {
   return (
     <div className="space-y-5">
       <div>
-        <label htmlFor="json-input" className="text-sm font-medium text-gray-700 block mb-1.5">JSON Input</label>
+        <label htmlFor="json-input" className="text-sm font-medium text-[#0F172A] block mb-1.5">JSON Input</label>
         <textarea id="json-input" value={input} onChange={(e) => setInput(e.target.value)}
           placeholder={'{\n  "example": "Paste your JSON here"\n}'}
           className="code-area" rows={8} spellCheck={false} />
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <div className="flex rounded-lg border border-gray-200 overflow-hidden">
-          <button onClick={() => setMode('format')} className={`px-4 py-2 text-sm font-medium transition-colors ${mode === 'format' ? 'bg-brand-500 text-white' : 'text-gray-700 hover:bg-gray-50'}`}>
+        <div className="flex rounded-lg border border-[#E2E8F0] overflow-hidden">
+          <button onClick={() => setMode('format')} className={`px-4 py-2 text-sm font-medium transition-colors ${mode === 'format' ? 'bg-[#2563EB] text-white' : 'text-[#475569] hover:bg-slate-50'}`}>
             Format / Pretty Print
           </button>
-          <button onClick={() => setMode('minify')} className={`px-4 py-2 text-sm font-medium transition-colors ${mode === 'minify' ? 'bg-brand-500 text-white' : 'text-gray-700 hover:bg-gray-50'}`}>
+          <button onClick={() => setMode('minify')} className={`px-4 py-2 text-sm font-medium transition-colors ${mode === 'minify' ? 'bg-[#2563EB] text-white' : 'text-[#475569] hover:bg-slate-50'}`}>
             Minify
           </button>
         </div>

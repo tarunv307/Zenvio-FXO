@@ -30,7 +30,7 @@ export function QRWifi() {
       width: 320,
       margin: 2,
       color: {
-        dark: '#0d9488',
+        dark: '#000000',
         light: '#ffffff',
       },
     })

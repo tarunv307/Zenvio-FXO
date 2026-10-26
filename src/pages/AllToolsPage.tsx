@@ -68,12 +68,12 @@ export function AllToolsPage() {
   const hasFilters = query || selectedCategory || sortOrder !== 'default';
 
   return (
-    <div className="min-h-screen bg-gray-50/50">
+    <div className="min-h-screen bg-[#F8FAFC]">
       {/* Page Header */}
-      <div className="bg-white border-b border-gray-200">
+      <div className="bg-white border-b border-[#E2E8F0]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-          <h1 className="text-2xl font-bold text-gray-900">All Tools</h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <h1 className="text-2xl font-bold text-[#0F172A]">All Tools</h1>
+          <p className="mt-1 text-sm text-[#475569]">
             {TOOLS.filter((t) => t.status === 'live').length} free browser-based tools — search, filter, and get things done.
           </p>
 
@@ -81,7 +81,7 @@ export function AllToolsPage() {
           <div className="mt-5 flex flex-col sm:flex-row gap-3">
             {/* Search Input */}
             <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" aria-hidden="true" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#64748B]" aria-hidden="true" />
               <input
                 ref={inputRef}
                 type="search"
@@ -89,20 +89,20 @@ export function AllToolsPage() {
                 onChange={handleQueryChange}
                 placeholder="Search tools…"
                 aria-label="Search tools"
-                className="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-xl bg-white
-                  focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                className="w-full pl-9 pr-4 py-2 text-sm border border-[#E2E8F0] rounded-xl bg-white text-[#0F172A] placeholder-[#64748B]
+                  focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent transition-colors"
               />
             </div>
 
             {/* Category Filter */}
             <div className="flex items-center gap-2">
-              <Filter className="size-4 text-gray-400 shrink-0" aria-hidden="true" />
+              <Filter className="size-4 text-[#64748B] shrink-0" aria-hidden="true" />
               <select
                 value={selectedCategory}
                 onChange={(e) => handleCategoryChange(e.target.value)}
                 aria-label="Filter by category"
-                className="pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-xl bg-white
-                  focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                className="pl-3 pr-8 py-2 text-sm border border-[#E2E8F0] rounded-xl bg-white text-[#0F172A]
+                  focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent transition-colors"
               >
                 <option value="">All Categories</option>
                 {CATEGORIES.map((cat) => (
@@ -113,13 +113,13 @@ export function AllToolsPage() {
 
             {/* Sort */}
             <div className="flex items-center gap-2">
-              <SortAsc className="size-4 text-gray-400 shrink-0" aria-hidden="true" />
+              <SortAsc className="size-4 text-[#64748B] shrink-0" aria-hidden="true" />
               <select
                 value={sortOrder}
                 onChange={(e) => { setSortOrder(e.target.value as 'default' | 'alpha'); setPage(1); }}
                 aria-label="Sort tools"
-                className="pl-3 pr-8 py-2 text-sm border border-gray-300 rounded-xl bg-white
-                  focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                className="pl-3 pr-8 py-2 text-sm border border-[#E2E8F0] rounded-xl bg-white text-[#0F172A]
+                  focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent transition-colors"
               >
                 <option value="default">Default order</option>
                 <option value="alpha">Alphabetical</option>
@@ -130,7 +130,7 @@ export function AllToolsPage() {
             {hasFilters && (
               <button
                 onClick={handleClearAll}
-                className="flex items-center gap-1.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-red-200"
+                className="flex items-center gap-1.5 px-3 py-2 text-sm text-[#DC2626] hover:bg-red-50 rounded-lg transition-colors border border-red-200"
               >
                 <X className="size-4" />
                 Clear filters
@@ -139,24 +139,24 @@ export function AllToolsPage() {
           </div>
 
           {/* Results count */}
-          <p className="mt-3 text-xs text-gray-500">
+          <p className="mt-3 text-xs text-[#64748B]">
             Showing {filtered.length === 0 ? 0 : `${(page - 1) * TOOLS_PER_PAGE + 1}–${Math.min(page * TOOLS_PER_PAGE, filtered.length)}`} of{' '}
-            <strong>{filtered.length}</strong> {filtered.length === 1 ? 'tool' : 'tools'}
+            <strong className="text-[#0F172A]">{filtered.length}</strong> {filtered.length === 1 ? 'tool' : 'tools'}
             {hasFilters ? ' (filtered)' : ''}
           </p>
         </div>
       </div>
 
       {/* Category Pills */}
-      <div className="bg-white border-b border-gray-100">
+      <div className="bg-white border-b border-[#E2E8F0]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3">
           <div className="flex flex-wrap gap-2" role="group" aria-label="Category filters">
             <button
               onClick={() => handleCategoryChange('')}
               className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors border
                 ${!selectedCategory
-                  ? 'bg-brand-500 text-white border-brand-500'
-                  : 'border-gray-200 text-gray-600 hover:border-brand-300 hover:text-brand-600'
+                  ? 'bg-[#2563EB] text-white border-[#2563EB] shadow-sm'
+                  : 'border-[#E2E8F0] bg-white text-[#475569] hover:border-blue-300 hover:text-[#2563EB]'
                 }`}
               aria-pressed={!selectedCategory}
             >
@@ -168,8 +168,8 @@ export function AllToolsPage() {
                 onClick={() => handleCategoryChange(selectedCategory === cat.id ? '' : cat.id)}
                 className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors border
                   ${selectedCategory === cat.id
-                    ? 'bg-brand-500 text-white border-brand-500'
-                    : 'border-gray-200 text-gray-600 hover:border-brand-300 hover:text-brand-600'
+                    ? 'bg-[#2563EB] text-white border-[#2563EB] shadow-sm'
+                    : 'border-[#E2E8F0] bg-white text-[#475569] hover:border-blue-300 hover:text-[#2563EB]'
                   }`}
                 aria-pressed={selectedCategory === cat.id}
               >
@@ -187,7 +187,7 @@ export function AllToolsPage() {
             title="No tools found"
             description={`No tools match "${query}". Try a different search term or clear filters.`}
             action={
-              <button onClick={handleClearAll} className="px-4 py-2 text-sm font-semibold bg-brand-500 text-white rounded-lg hover:bg-brand-600">
+              <button onClick={handleClearAll} className="px-4 py-2 text-sm font-semibold bg-[#2563EB] text-white rounded-lg hover:bg-[#1D4ED8] transition-colors shadow-sm">
                 Clear filters
               </button>
             }
@@ -206,7 +206,7 @@ export function AllToolsPage() {
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg disabled:opacity-40 hover:bg-gray-50 transition-colors"
+              className="px-3 py-1.5 text-sm border border-[#E2E8F0] bg-white text-[#475569] rounded-lg disabled:opacity-40 hover:bg-slate-50 transition-colors"
               aria-label="Previous page"
             >
               ←
@@ -215,8 +215,8 @@ export function AllToolsPage() {
               <button
                 key={p}
                 onClick={() => setPage(p)}
-                className={`px-3 py-1.5 text-sm rounded-lg transition-colors
-                  ${p === page ? 'bg-brand-500 text-white' : 'border border-gray-300 hover:bg-gray-50'}`}
+                className={`px-3 py-1.5 text-sm rounded-lg font-medium transition-colors
+                  ${p === page ? 'bg-[#2563EB] text-white border border-[#2563EB] shadow-sm' : 'border border-[#E2E8F0] bg-white text-[#475569] hover:bg-slate-50 hover:text-[#0F172A]'}`}
                 aria-label={`Page ${p}`}
                 aria-current={p === page ? 'page' : undefined}
               >
@@ -226,7 +226,7 @@ export function AllToolsPage() {
             <button
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
-              className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg disabled:opacity-40 hover:bg-gray-50 transition-colors"
+              className="px-3 py-1.5 text-sm border border-[#E2E8F0] bg-white text-[#475569] rounded-lg disabled:opacity-40 hover:bg-slate-50 transition-colors"
               aria-label="Next page"
             >
               →

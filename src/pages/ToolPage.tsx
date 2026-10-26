@@ -72,6 +72,24 @@ const QRUrl                 = React.lazy(() => import('./tools/QRUrl').then((m) 
 const QRText                = React.lazy(() => import('./tools/QRText').then((m) => ({ default: m.QRText })));
 const QRWifi                = React.lazy(() => import('./tools/QRWifi').then((m) => ({ default: m.QRWifi })));
 const QRVcard               = React.lazy(() => import('./tools/QRVcard').then((m) => ({ default: m.QRVcard })));
+const QRStudio              = React.lazy(() => import('./tools/QRStudio').then((m) => ({ default: m.QRStudio })));
+
+// ── AI Tools ──────────────────────────────────────────────────────────────────
+const AISummarizer          = React.lazy(() => import('./tools/ai/AISummarizer').then((m) => ({ default: m.AISummarizer })));
+const AIRewriter            = React.lazy(() => import('./tools/ai/AIRewriter').then((m) => ({ default: m.AIRewriter })));
+const AIGrammarChecker      = React.lazy(() => import('./tools/ai/AIGrammarChecker').then((m) => ({ default: m.AIGrammarChecker })));
+const AIParaphraser         = React.lazy(() => import('./tools/ai/AIParaphraser').then((m) => ({ default: m.AIParaphraser })));
+const AIToneChanger         = React.lazy(() => import('./tools/ai/AIToneChanger').then((m) => ({ default: m.AIToneChanger })));
+const AITextSimplifier      = React.lazy(() => import('./tools/ai/AITextSimplifier').then((m) => ({ default: m.AITextSimplifier })));
+const AIBulletPoints        = React.lazy(() => import('./tools/ai/AIBulletPoints').then((m) => ({ default: m.AIBulletPoints })));
+const AIEmailGenerator      = React.lazy(() => import('./tools/ai/AIEmailGenerator').then((m) => ({ default: m.AIEmailGenerator })));
+const AIBlogOutline         = React.lazy(() => import('./tools/ai/AIBlogOutline').then((m) => ({ default: m.AIBlogOutline })));
+const AINotesSummarizer     = React.lazy(() => import('./tools/ai/AINotesSummarizer').then((m) => ({ default: m.AINotesSummarizer })));
+const AIFlashcardGenerator  = React.lazy(() => import('./tools/ai/AIFlashcardGenerator').then((m) => ({ default: m.AIFlashcardGenerator })));
+const AIQuizGenerator       = React.lazy(() => import('./tools/ai/AIQuizGenerator').then((m) => ({ default: m.AIQuizGenerator })));
+const AICodeExplainer       = React.lazy(() => import('./tools/ai/AICodeExplainer').then((m) => ({ default: m.AICodeExplainer })));
+const AIErrorExplainer      = React.lazy(() => import('./tools/ai/AIErrorExplainer').then((m) => ({ default: m.AIErrorExplainer })));
+const AIReadmeGenerator     = React.lazy(() => import('./tools/ai/AIReadmeGenerator').then((m) => ({ default: m.AIReadmeGenerator })));
 
 // ─── Tool Component Map ────────────────────────────────────────────────────────
 
@@ -134,7 +152,8 @@ const TOOL_COMPONENTS: Record<string, React.ComponentType> = {
   'timestamp-converter':    TimestampConverter,
   'html-entity-encoder':    HTMLEntityEncoder,
   'url-parser':             URLParser,
-  'qr-code-generator':      QRCodeGenerator,
+  'qr-code-generator':      QRStudio,
+  'qr-studio':              QRStudio,
   'qr-code-scanner':        QRCodeScanner,
   'aspect-ratio-calculator': AspectRatioCalc,
   'file-size-calculator':   FileSizeCalc,
@@ -144,6 +163,23 @@ const TOOL_COMPONENTS: Record<string, React.ComponentType> = {
   'qr-text':                QRText,
   'qr-wifi':                QRWifi,
   'qr-vcard':               QRVcard,
+
+  // AI Tools
+  'ai-summarizer':          AISummarizer,
+  'ai-rewriter':            AIRewriter,
+  'ai-grammar-checker':     AIGrammarChecker,
+  'ai-paraphraser':         AIParaphraser,
+  'ai-tone-changer':        AIToneChanger,
+  'ai-text-simplifier':     AITextSimplifier,
+  'ai-bullet-points':       AIBulletPoints,
+  'ai-email-generator':     AIEmailGenerator,
+  'ai-blog-outline':        AIBlogOutline,
+  'ai-notes-summarizer':    AINotesSummarizer,
+  'ai-flashcard-generator': AIFlashcardGenerator,
+  'ai-quiz-generator':      AIQuizGenerator,
+  'ai-code-explainer':      AICodeExplainer,
+  'ai-error-explainer':     AIErrorExplainer,
+  'ai-readme-generator':    AIReadmeGenerator,
 };
 
 // ─── Tool Page Dispatcher ──────────────────────────────────────────────────────
@@ -152,11 +188,11 @@ function ToolLoadingFallback() {
   return (
     <div className="flex items-center justify-center py-20">
       <div className="flex flex-col items-center gap-3">
-        <svg className="animate-spin size-8 text-brand-500" viewBox="0 0 24 24" fill="none">
+        <svg className="animate-spin size-8 text-[#2563EB]" viewBox="0 0 24 24" fill="none">
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
         </svg>
-        <p className="text-sm text-gray-500">Loading tool…</p>
+        <p className="text-sm text-[#64748B]">Loading tool…</p>
       </div>
     </div>
   );

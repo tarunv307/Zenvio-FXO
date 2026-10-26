@@ -43,9 +43,9 @@ export function WordCounter() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         {stats.map(({ label, value }) => (
-          <div key={label} className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-center">
-            <p className="text-2xl font-black text-brand-600">{value}</p>
-            <p className="text-xs text-gray-500 mt-0.5">{label}</p>
+          <div key={label} className="px-4 py-3 bg-[#EFF6FF]/50 border border-[#E2E8F0] rounded-xl text-center">
+            <p className="text-2xl font-black text-[#2563EB]">{value}</p>
+            <p className="text-xs text-[#64748B] mt-0.5">{label}</p>
           </div>
         ))}
       </div>

@@ -17,23 +17,23 @@ function HeroSection() {
     <section className="relative pt-16 pb-12 overflow-hidden">
       {/* Subtle background pattern */}
       <div className="absolute inset-0 -z-10" aria-hidden="true">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-b from-brand-50/60 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-b from-blue-50/70 to-transparent rounded-full blur-3xl" />
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold mb-6">
-          <div className="size-1.5 rounded-full bg-brand-500 animate-pulse" />
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EFF6FF] border border-blue-200 text-[#1D4ED8] text-xs font-semibold mb-6">
+          <div className="size-1.5 rounded-full bg-[#2563EB] animate-pulse" />
           {LIVE_TOOLS} tools available • All free • No sign-up required
         </div>
 
-        <h1 className="text-4xl sm:text-5xl font-black text-gray-900 tracking-tight leading-tight">
+        <h1 className="text-4xl sm:text-5xl font-black text-[#0F172A] tracking-tight leading-tight">
           Everyday Tasks.
           <br />
-          <span className="text-brand-500">Made Effortless.</span>
+          <span className="text-[#2563EB]">Made Effortless.</span>
         </h1>
 
-        <p className="mt-5 text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
+        <p className="mt-5 text-lg text-[#475569] max-w-2xl mx-auto leading-relaxed">
           Discover simple, powerful tools for images, PDFs, documents, development, learning,
           and everyday productivity — all running in your browser.
         </p>
@@ -47,23 +47,23 @@ function HeroSection() {
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
           <Link
             to="/tools"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-brand-500 text-white font-semibold rounded-xl hover:bg-brand-600 active:bg-brand-700 transition-colors shadow-brand"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[#2563EB] text-white font-semibold rounded-xl hover:bg-[#1D4ED8] active:bg-[#1D4ED8] transition-colors shadow-sm"
           >
             Explore All Tools <ArrowRight className="size-4" aria-hidden="true" />
           </Link>
-          <Link
-            to="#categories"
-            className="inline-flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-colors"
+          <a
+            href="#categories"
+            className="inline-flex items-center gap-2 px-6 py-3 border border-[#E2E8F0] bg-white text-[#475569] font-semibold rounded-xl hover:border-slate-300 hover:text-[#0F172A] hover:bg-slate-50 transition-colors"
           >
             Browse Categories
-          </Link>
+          </a>
         </div>
 
         {/* Trust signals */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-gray-500">
-          <span className="flex items-center gap-1.5"><Lock className="size-4 text-brand-500" />Files never uploaded</span>
-          <span className="flex items-center gap-1.5"><Zap className="size-4 text-brand-500" />Instant processing</span>
-          <span className="flex items-center gap-1.5"><Download className="size-4 text-brand-500" />No watermarks</span>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-[#64748B]">
+          <span className="flex items-center gap-1.5"><Lock className="size-4 text-[#2563EB]" />Files never uploaded</span>
+          <span className="flex items-center gap-1.5"><Zap className="size-4 text-[#2563EB]" />Instant processing</span>
+          <span className="flex items-center gap-1.5"><Download className="size-4 text-[#2563EB]" />No watermarks</span>
         </div>
       </div>
     </section>
@@ -95,23 +95,23 @@ function HowItWorks() {
   ];
 
   return (
-    <section className="py-16 border-t border-gray-100">
+    <section className="py-16 border-t border-[#E2E8F0]">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
-          <h2 className="text-2xl font-bold text-gray-900">How it works</h2>
-          <p className="mt-2 text-sm text-gray-500">Three steps to get things done.</p>
+          <h2 className="text-2xl font-bold text-[#0F172A]">How it works</h2>
+          <p className="mt-2 text-sm text-[#475569]">Three steps to get things done.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {steps.map((step) => (
-            <div key={step.number} className="relative flex flex-col items-center text-center p-6 rounded-2xl bg-gray-50">
-              <span className="absolute top-4 right-4 text-5xl font-black text-gray-100 select-none" aria-hidden="true">
+            <div key={step.number} className="relative flex flex-col items-center text-center p-6 rounded-2xl bg-white border border-[#E2E8F0] shadow-card">
+              <span className="absolute top-4 right-4 text-5xl font-black text-slate-100 select-none" aria-hidden="true">
                 {step.number}
               </span>
-              <div className="flex size-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600 mb-4">
+              <div className="flex size-12 items-center justify-center rounded-xl bg-[#EFF6FF] text-[#2563EB] border border-blue-100 mb-4">
                 <step.icon className="size-6" aria-hidden="true" />
               </div>
-              <h3 className="font-bold text-gray-900 mb-2">{step.title}</h3>
-              <p className="text-sm text-gray-500 leading-relaxed">{step.description}</p>
+              <h3 className="font-bold text-[#0F172A] mb-2">{step.title}</h3>
+              <p className="text-sm text-[#475569] leading-relaxed">{step.description}</p>
             </div>
           ))}
         </div>
@@ -130,12 +130,12 @@ function FeaturedTools() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-baseline justify-between mb-6">
           <div>
-            <h2 className="text-xl font-bold text-gray-900">Popular Tools</h2>
-            <p className="mt-1 text-sm text-gray-500">The most-used utilities in Zenvio FXO.</p>
+            <h2 className="text-xl font-bold text-[#0F172A]">Popular Tools</h2>
+            <p className="mt-1 text-sm text-[#475569]">The most-used utilities in Zenvio FXO.</p>
           </div>
           <Link
             to="/tools"
-            className="flex items-center gap-1 text-sm font-semibold text-brand-600 hover:text-brand-700 transition-colors"
+            className="flex items-center gap-1 text-sm font-semibold text-[#2563EB] hover:text-[#1D4ED8] transition-colors"
           >
             All {LIVE_TOOLS} tools <ChevronRight className="size-4" />
           </Link>
@@ -155,11 +155,11 @@ function FeaturedTools() {
 
 function CategoriesGrid() {
   return (
-    <section id="categories" className="py-12 bg-gray-50/60 border-y border-gray-100">
+    <section id="categories" className="py-12 bg-slate-50/50 border-y border-[#E2E8F0]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="mb-8">
-          <h2 className="text-xl font-bold text-gray-900">Browse by Category</h2>
-          <p className="mt-1.5 text-sm text-gray-500 max-w-lg">
+          <h2 className="text-xl font-bold text-[#0F172A]">Browse by Category</h2>
+          <p className="mt-1.5 text-sm text-[#475569] max-w-lg">
             Curated tool collections for specific tasks — find what you need without hunting.
           </p>
         </div>
@@ -202,19 +202,19 @@ function PrivacySection() {
     <section className="py-16">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
-          <h2 className="text-2xl font-bold text-gray-900">Your Privacy Comes First</h2>
-          <p className="mt-2 text-sm text-gray-500 max-w-xl mx-auto">
+          <h2 className="text-2xl font-bold text-[#0F172A]">Your Privacy Comes First</h2>
+          <p className="mt-2 text-sm text-[#475569] max-w-xl mx-auto">
             We built Zenvio FXO with a privacy-by-default approach. Here's what that means in practice.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {points.map((point) => (
-            <div key={point.title} className="p-6 rounded-2xl border border-gray-200 bg-white">
-              <div className="flex size-10 items-center justify-center rounded-lg bg-brand-50 text-brand-600 mb-4">
+            <div key={point.title} className="p-6 rounded-2xl border border-[#E2E8F0] bg-white shadow-card">
+              <div className="flex size-10 items-center justify-center rounded-lg bg-[#EFF6FF] text-[#2563EB] border border-blue-100 mb-4">
                 <point.icon className="size-5" aria-hidden="true" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">{point.title}</h3>
-              <p className="text-sm text-gray-500 leading-relaxed">{point.description}</p>
+              <h3 className="font-semibold text-[#0F172A] mb-2">{point.title}</h3>
+              <p className="text-sm text-[#475569] leading-relaxed">{point.description}</p>
             </div>
           ))}
         </div>
@@ -254,23 +254,23 @@ function FAQSection() {
   ];
 
   return (
-    <section className="py-16 bg-gray-50/60 border-t border-gray-100">
+    <section className="py-16 bg-slate-50/50 border-t border-[#E2E8F0]">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
-          <h2 className="text-2xl font-bold text-gray-900">Frequently Asked Questions</h2>
+          <h2 className="text-2xl font-bold text-[#0F172A]">Frequently Asked Questions</h2>
         </div>
-        <div className="divide-y divide-gray-200">
+        <div className="divide-y divide-[#E2E8F0]">
           {faqs.map((faq) => (
             <div key={faq.q} className="py-5">
-              <h3 className="font-semibold text-gray-900 mb-2">{faq.q}</h3>
-              <p className="text-sm text-gray-500 leading-relaxed">{faq.a}</p>
+              <h3 className="font-semibold text-[#0F172A] mb-2">{faq.q}</h3>
+              <p className="text-sm text-[#475569] leading-relaxed">{faq.a}</p>
             </div>
           ))}
         </div>
         <div className="mt-8 text-center">
           <Link
             to="/faq"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-brand-600 hover:text-brand-700 transition-colors"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-[#2563EB] hover:text-[#1D4ED8] transition-colors"
           >
             View all FAQs <ChevronRight className="size-4" />
           </Link>

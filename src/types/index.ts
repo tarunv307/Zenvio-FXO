@@ -9,7 +9,8 @@ export type ToolCategory =
   | 'devkit'
   | 'mediakit'
   | 'privacykit'
-  | 'qrkit';
+  | 'qrkit'
+  | 'aikit';
 
 export type ToolStatus = 'live' | 'beta' | 'coming-soon';
 

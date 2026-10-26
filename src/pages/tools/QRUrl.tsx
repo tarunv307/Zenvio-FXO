@@ -20,7 +20,7 @@ export function QRUrl() {
       width: size,
       margin: 2,
       color: {
-        dark: '#0f766e',
+        dark: '#000000',
         light: '#ffffff',
       },
     })

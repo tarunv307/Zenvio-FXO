@@ -7,32 +7,53 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Zenvio FXO Brand Colors
+        // Zenvio FXO — Midnight Blue Premium SaaS Color System
         brand: {
-          50:  '#ecfdf5',
-          100: '#d1fae5',
-          200: '#a7f3d0',
-          300: '#6ee7b7',
-          400: '#34d399',
-          500: '#10b981', // Primary emerald
-          600: '#059669',
-          700: '#047857',
-          800: '#065f46',
-          900: '#064e3b',
-          950: '#022c22',
+          50:  '#EFF6FF', // Light blue surfaces
+          100: '#DBEAFE',
+          200: '#BFDBFE',
+          300: '#93C5FD',
+          400: '#60A5FA',
+          500: '#2563EB', // Primary blue
+          600: '#1D4ED8', // Primary hover
+          700: '#1E40AF',
+          800: '#1E3A8A',
+          900: '#172554',
+          950: '#0F172A', // Main heading / Midnight dark
         },
         surface: {
-          DEFAULT: '#ffffff',
-          soft: '#f9fafb',
-          muted: '#f3f4f6',
-          border: '#e5e7eb',
-          'border-strong': '#d1d5db',
+          page: '#F8FAFC',
+          card: '#FFFFFF',
+          soft: '#F8FAFC',
+          muted: '#F1F5F9',
+          'light-blue': '#EFF6FF',
+          border: '#E2E8F0',
+          'border-hover': '#CBD5E1',
         },
         text: {
-          primary: '#111827',
-          secondary: '#374151',
-          muted: '#6b7280',
-          faint: '#9ca3af',
+          heading: '#0F172A',
+          body: '#475569',
+          secondary: '#64748B',
+          muted: '#94A3B8',
+          faint: '#CBD5E1',
+        },
+        status: {
+          success: '#16A34A',
+          warning: '#D97706',
+          error: '#DC2626',
+        },
+        gray: {
+          50:  '#F8FAFC', // Page background
+          100: '#F1F5F9', // Light surface
+          200: '#E2E8F0', // Border
+          300: '#CBD5E1', // Subtle border
+          400: '#94A3B8', // Muted text
+          500: '#64748B', // Secondary text
+          600: '#475569', // Body text
+          700: '#334155', // Dark body text
+          800: '#1E293B', // Dark slate
+          900: '#0F172A', // Main heading
+          950: '#020617',
         },
       },
       fontFamily: {
@@ -40,15 +61,16 @@ export default {
         mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
       },
       borderRadius: {
+        'lg': '10px',
         'xl': '12px',
         '2xl': '16px',
         '3xl': '24px',
       },
       boxShadow: {
-        'card': '0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04)',
-        'card-hover': '0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04)',
-        'modal': '0 20px 60px -12px rgba(0, 0, 0, 0.15), 0 8px 24px -6px rgba(0, 0, 0, 0.10)',
-        'brand': '0 4px 14px 0 rgba(16, 185, 129, 0.2)',
+        'card': '0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.03)',
+        'card-hover': '0 4px 12px -2px rgba(15, 23, 42, 0.08), 0 2px 6px -2px rgba(15, 23, 42, 0.04)',
+        'modal': '0 20px 60px -12px rgba(15, 23, 42, 0.15), 0 8px 24px -6px rgba(15, 23, 42, 0.08)',
+        'brand': '0 4px 14px 0 rgba(37, 99, 235, 0.22)',
       },
       animation: {
         'fade-in': 'fadeIn 0.2s ease-in-out',

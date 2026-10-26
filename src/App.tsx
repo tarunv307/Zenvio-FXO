@@ -6,12 +6,14 @@ import { AllToolsPage } from './pages/AllToolsPage';
 import { CategoryPage } from './pages/CategoryPage';
 import { ToolPage } from './pages/ToolPage';
 
+import { RedirectHandler } from './pages/RedirectHandler';
+
 function PageLoader() {
   return (
     <div className="min-h-[50vh] flex items-center justify-center">
       <div className="flex flex-col items-center gap-3">
-        <div className="w-8 h-8 rounded-full border-2 border-brand-500 border-t-transparent animate-spin" />
-        <span className="text-xs font-medium text-gray-400">Loading Zenvio tool...</span>
+        <div className="w-8 h-8 rounded-full border-2 border-[#2563EB] border-t-transparent animate-spin" />
+        <span className="text-xs font-medium text-[#64748B]">Loading Zenvio FXO...</span>
       </div>
     </div>
   );
@@ -22,6 +24,10 @@ export default function App() {
     <BrowserRouter>
       <Suspense fallback={<PageLoader />}>
         <Routes>
+          {/* Standalone Dynamic QR Redirect Route */}
+          <Route path="/r/:code" element={<RedirectHandler />} />
+
+          {/* Main App Routes */}
           <Route path="/" element={<RootLayout />}>
             <Route index element={<HomePage />} />
             <Route path="tools" element={<AllToolsPage />} />

@@ -23,37 +23,37 @@ export function ToolPageLayout({ tool, children, privacyMessage, showPrivacyNote
   const IconComponent = (Icons as any)[tool.icon] || Icons.Wrench;
 
   return (
-    <div className="min-h-screen bg-gray-50/50">
+    <div className="min-h-screen bg-[#F8FAFC]">
       {/* Breadcrumb */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-5">
-        <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-gray-500">
-          <Link to="/" className="hover:text-brand-600 transition-colors">Home</Link>
+        <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-[#64748B]">
+          <Link to="/" className="hover:text-[#2563EB] transition-colors">Home</Link>
           <ChevronRight className="size-3" aria-hidden="true" />
-          <Link to="/tools" className="hover:text-brand-600 transition-colors">Tools</Link>
+          <Link to="/tools" className="hover:text-[#2563EB] transition-colors">Tools</Link>
           <ChevronRight className="size-3" aria-hidden="true" />
           {category && (
             <>
-              <Link to={`/category/${category.id}`} className="hover:text-brand-600 transition-colors">{category.name}</Link>
+              <Link to={`/category/${category.id}`} className="hover:text-[#2563EB] transition-colors">{category.name}</Link>
               <ChevronRight className="size-3" aria-hidden="true" />
             </>
           )}
-          <span className="text-gray-800 font-medium truncate">{tool.name}</span>
+          <span className="text-[#0F172A] font-semibold truncate">{tool.name}</span>
         </nav>
       </div>
 
       {/* Tool Header */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
         <div className="flex items-start gap-4">
-          <div className={`flex shrink-0 size-12 items-center justify-center rounded-xl ${category?.bgColor || 'bg-gray-100'}`}>
-            <IconComponent className={`size-6 ${category?.textColor || 'text-gray-600'}`} aria-hidden="true" />
+          <div className={`flex shrink-0 size-12 items-center justify-center rounded-xl ${category?.bgColor || 'bg-blue-50'} border border-[#E2E8F0]`}>
+            <IconComponent className={`size-6 ${category?.textColor || 'text-[#2563EB]'}`} aria-hidden="true" />
           </div>
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-xl font-bold text-gray-900">{tool.name}</h1>
+              <h1 className="text-xl font-bold text-[#0F172A]">{tool.name}</h1>
               {tool.status === 'beta' && <span className="badge-beta">Beta</span>}
               {tool.isNew && <span className="badge-new">New</span>}
             </div>
-            <p className="mt-1 text-sm text-gray-500">{tool.description}</p>
+            <p className="mt-1 text-sm text-[#475569]">{tool.description}</p>
           </div>
         </div>
 
@@ -67,14 +67,14 @@ export function ToolPageLayout({ tool, children, privacyMessage, showPrivacyNote
 
       {/* Main Content */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 pb-12">
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-card p-6">
+        <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-card p-6 sm:p-8">
           {children}
         </div>
 
         {/* Related Tools */}
         {related.length > 0 && (
           <div className="mt-8">
-            <h2 className="text-base font-bold text-gray-900 mb-4">Related Tools</h2>
+            <h2 className="text-base font-bold text-[#0F172A] mb-4">Related Tools</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {related.map((t) => (
                 <ToolCard key={t.id} tool={t} compact />

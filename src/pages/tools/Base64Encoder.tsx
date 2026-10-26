@@ -30,17 +30,17 @@ export function Base64Encoder() {
 
   return (
     <div className="space-y-5">
-      <div className="flex rounded-lg border border-gray-200 overflow-hidden w-fit">
-        <button onClick={() => setMode('encode')} className={`px-5 py-2 text-sm font-medium transition-colors ${mode === 'encode' ? 'bg-brand-500 text-white' : 'text-gray-700 hover:bg-gray-50'}`}>
+      <div className="flex rounded-lg border border-[#E2E8F0] overflow-hidden w-fit">
+        <button onClick={() => setMode('encode')} className={`px-5 py-2 text-sm font-medium transition-colors ${mode === 'encode' ? 'bg-[#2563EB] text-white' : 'text-[#475569] hover:bg-slate-50'}`}>
           Encode
         </button>
-        <button onClick={() => setMode('decode')} className={`px-5 py-2 text-sm font-medium transition-colors ${mode === 'decode' ? 'bg-brand-500 text-white' : 'text-gray-700 hover:bg-gray-50'}`}>
+        <button onClick={() => setMode('decode')} className={`px-5 py-2 text-sm font-medium transition-colors ${mode === 'decode' ? 'bg-[#2563EB] text-white' : 'text-[#475569] hover:bg-slate-50'}`}>
           Decode
         </button>
       </div>
 
       <div>
-        <label htmlFor="b64-input" className="text-sm font-medium text-gray-700 block mb-1.5">
+        <label htmlFor="b64-input" className="text-sm font-medium text-[#0F172A] block mb-1.5">
           {mode === 'encode' ? 'Plain text input' : 'Base64 input'}
         </label>
         <textarea id="b64-input" value={input} onChange={(e) => setInput(e.target.value)}

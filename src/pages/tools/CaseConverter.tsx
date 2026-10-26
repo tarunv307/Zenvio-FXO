@@ -70,8 +70,8 @@ export function CaseConverter() {
             onClick={() => apply(key)}
             className={`px-3 py-1.5 text-sm font-medium rounded-lg border transition-colors
               ${activeKey === key
-                ? 'bg-brand-500 text-white border-brand-500'
-                : 'border-gray-200 text-gray-700 hover:border-brand-300 hover:text-brand-700'
+                ? 'bg-[#2563EB] text-white border-[#2563EB] shadow-sm'
+                : 'border-[#E2E8F0] bg-white text-[#475569] hover:border-blue-300 hover:text-[#2563EB]'
               }`}
           >
             {label}
