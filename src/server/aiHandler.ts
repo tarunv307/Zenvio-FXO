@@ -334,7 +334,6 @@ export async function executeAIRequest(body: AIRequestBody): Promise<AIResponse>
       'gemini-3.1-flash-lite-preview',
       'gemini-3.8-flash',
       'gemini-flash-latest',
-      'gemini-1.5-flash',
     ].filter(Boolean) as string[];
 
     let lastError = '';
