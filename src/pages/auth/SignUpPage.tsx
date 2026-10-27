@@ -107,9 +107,29 @@ export function SignUpPage() {
 
           {/* Error Alert */}
           {displayError && (
-            <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 flex items-start gap-2.5 text-xs text-red-700">
-              <AlertCircle className="size-4 shrink-0 text-red-600 mt-0.5" />
-              <div className="flex-1">{displayError}</div>
+            <div className="p-4 rounded-2xl bg-red-50 border border-red-200 text-xs text-red-700 space-y-2">
+              <div className="flex items-start gap-2.5">
+                <AlertCircle className="size-4 shrink-0 text-red-600 mt-0.5" />
+                <div className="flex-1 font-medium">{displayError}</div>
+              </div>
+              {displayError.toLowerCase().includes('popup') && (
+                <div className="mt-2 pt-2 border-t border-red-200/80 text-[11px] text-red-900 space-y-1.5 bg-red-100/40 p-2.5 rounded-xl">
+                  <p className="font-bold text-red-950 flex items-center gap-1.5">
+                    <span>💡</span> Quick Fix (Takes 5 seconds):
+                  </p>
+                  <ol className="list-decimal list-inside space-y-1 text-red-800 leading-relaxed">
+                    <li>
+                      Look at the top right of your browser's address bar for the <span className="font-semibold underline">Pop-up blocked</span> icon (a window with a red cross).
+                    </li>
+                    <li>
+                      Click it and choose <span className="font-semibold">"Always allow pop-ups and redirects from this site"</span>.
+                    </li>
+                    <li>
+                      Click <span className="font-semibold">Done</span>, then click the Google button below.
+                    </li>
+                  </ol>
+                </div>
+              )}
             </div>
           )}
 
