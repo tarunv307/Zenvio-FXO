@@ -18,9 +18,80 @@ describe('Firebase Authentication — Error Handling & UX Messages', () => {
     expect(msg).toContain('popup was blocked');
   });
 
+  it('translates auth/missing-initial-state into storage partitioning instruction', () => {
+    const msg = getFriendlyAuthErrorMessage('auth/missing-initial-state');
+    expect(msg).toContain('storage partitioning');
+  });
+
+  it('translates auth/cancelled-popup-request into open window notice', () => {
+    const msg = getFriendlyAuthErrorMessage('auth/cancelled-popup-request');
+    expect(msg).toContain('sign-in window was already open');
+  });
+
+  it('translates auth/operation-not-allowed into console setup notice', () => {
+    const msg = getFriendlyAuthErrorMessage('auth/operation-not-allowed');
+    expect(msg).toContain('enable Google provider');
+  });
+
   it('provides safe generic fallback for unexpected codes', () => {
     const msg = getFriendlyAuthErrorMessage('auth/unknown-error');
     expect(msg).toContain('An error occurred during authentication');
+  });
+});
+
+describe('Firebase Configuration & Popup Contract', () => {
+  it('has valid Firebase client configuration with projectId and authDomain', async () => {
+    const { firebaseConfig, isFirebaseConfigured, signInWithGoogle } = await import('../lib/firebase');
+    expect(firebaseConfig.projectId).toBe('zenvio-fxo');
+    expect(firebaseConfig.authDomain).toBe('zenvio-fxo.firebaseapp.com');
+    expect(isFirebaseConfigured).toBe(true);
+    expect(typeof signInWithGoogle).toBe('function');
+  });
+});
+
+describe('GoogleSignInButton UI Component', () => {
+  it('renders correctly and dispatches onClick directly upon user click', async () => {
+    const React = await import('react');
+    const { render, fireEvent, screen, cleanup } = await import('@testing-library/react');
+    const { GoogleSignInButton } = await import('../components/auth/GoogleSignInButton');
+
+    cleanup();
+    let clicked = false;
+    render(
+      React.createElement(GoogleSignInButton, {
+        onClick: () => {
+          clicked = true;
+        },
+        text: 'Continue with Google',
+      })
+    );
+
+    const button = screen.getByRole('button', { name: /continue with google/i });
+    expect(button).toBeInTheDocument();
+    expect(button).not.toBeDisabled();
+
+    fireEvent.click(button);
+    expect(clicked).toBe(true);
+    cleanup();
+  });
+
+  it('disables button and displays connecting state when loading is true', async () => {
+    const React = await import('react');
+    const { render, screen, cleanup } = await import('@testing-library/react');
+    const { GoogleSignInButton } = await import('../components/auth/GoogleSignInButton');
+
+    cleanup();
+    render(
+      React.createElement(GoogleSignInButton, {
+        onClick: () => {},
+        loading: true,
+      })
+    );
+
+    const button = screen.getByRole('button');
+    expect(button).toBeDisabled();
+    expect(screen.getByText(/connecting to google.../i)).toBeInTheDocument();
+    cleanup();
   });
 });
 

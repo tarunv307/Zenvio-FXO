@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { User as FirebaseUser } from 'firebase/auth';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, getRedirectResult } from 'firebase/auth';
 import {
   auth,
   isFirebaseConfigured,
@@ -47,6 +47,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
+    // Safely check redirect result if a redirect authentication was executed
+    getRedirectResult(auth)
+      .then((cred) => {
+        if (cred?.user) {
+          console.info('Redirect authentication completed successfully');
+        }
+      })
+      .catch((redirectErr) => {
+        // Silently catch known storage partitioning or null redirect errors
+        const code = redirectErr?.code || '';
+        if (
+          code !== 'auth/missing-initial-state' &&
+          code !== 'auth/null-user' &&
+          code !== 'auth/popup-closed-by-user'
+        ) {
+          console.warn('Redirect sign-in notice:', redirectErr?.message || redirectErr);
+        }
+      });
+
     const unsubscribe = onAuthStateChanged(
       auth,
       (current) => {
@@ -73,15 +92,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => unsubscribe();
   }, []);
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = (): Promise<void> => {
     setError(null);
-    try {
-      await fbSignInWithGoogle();
-    } catch (err: any) {
-      const msg = getFriendlyAuthErrorMessage(err?.code || err?.message || '');
-      setError(msg);
-      throw new Error(msg);
-    }
+    return fbSignInWithGoogle()
+      .then(() => {
+        // Successfully initiated popup & authenticated
+      })
+      .catch((err: any) => {
+        console.error('[AuthContext] Google Sign-in error:', err?.code, err?.message);
+        const friendly = getFriendlyAuthErrorMessage(err?.code || err?.message || '');
+        const isDev =
+          import.meta.env.DEV ||
+          (typeof window !== 'undefined' && window.location.hostname === 'localhost');
+        const fullMsg = isDev && err?.code ? `${friendly} [Code: ${err.code}]` : friendly;
+        setError(fullMsg);
+        const enhancedError: any = new Error(fullMsg);
+        enhancedError.code = err?.code;
+        throw enhancedError;
+      });
   };
 
   const signInWithEmail = async (email: string, pass: string) => {

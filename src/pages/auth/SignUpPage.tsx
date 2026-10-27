@@ -18,18 +18,27 @@ export function SignUpPage() {
   const [loadingEmail, setLoadingEmail] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
 
-  const handleGoogleSignIn = async () => {
+  const handleGoogleSignIn = () => {
     setLocalError(null);
     clearError();
     setLoadingGoogle(true);
-    try {
-      await signInWithGoogle();
-      navigate('/', { replace: true });
-    } catch (err: any) {
-      setLocalError(err.message || 'Google sign-up failed.');
-    } finally {
-      setLoadingGoogle(false);
-    }
+
+    // Directly trigger popup in synchronous user gesture
+    signInWithGoogle()
+      .then(() => {
+        navigate('/', { replace: true });
+      })
+      .catch((err: any) => {
+        console.error('[SignUpPage] Google sign-up failed:', err);
+        const isDev =
+          import.meta.env.DEV ||
+          (typeof window !== 'undefined' && window.location.hostname === 'localhost');
+        const codeSuffix = isDev && err?.code ? ` [Code: ${err.code}]` : '';
+        setLocalError(`${err.message || 'Google sign-up failed.'}${codeSuffix}`);
+      })
+      .finally(() => {
+        setLoadingGoogle(false);
+      });
   };
 
   const handleEmailSignUp = async (e: React.FormEvent) => {

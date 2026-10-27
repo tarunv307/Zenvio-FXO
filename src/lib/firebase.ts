@@ -19,13 +19,13 @@ import {
  * Environment variables must be prefixed with VITE_ to be exposed to client bundle by Vite.
  */
 export const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || '',
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || '',
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || '',
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || '',
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '',
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || '',
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || '',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || 'AIzaSyBmxjzHoRZc4cUMZ81QbI9mFBs96QTK434',
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || 'zenvio-fxo.firebaseapp.com',
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || 'zenvio-fxo',
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || 'zenvio-fxo.firebasestorage.app',
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '1090337015895',
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || '1:1090337015895:web:0a2a25d5648f46d0e87b12',
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || 'G-RD63568T8J',
 };
 
 /**
@@ -61,23 +61,26 @@ export { app, auth, googleProvider };
 
 /**
  * Sign in using Google OAuth popup
+ * Triggers signInWithPopup directly and synchronously within the user event loop
+ * without awaiting unrelated asynchronous operations first.
  */
-export async function signInWithGoogle(): Promise<UserCredential> {
+export function signInWithGoogle(): Promise<UserCredential> {
   if (!auth || !googleProvider) {
     throw new Error('Firebase Authentication is not configured. Please add your VITE_FIREBASE_* environment variables.');
   }
 
-  try {
-    return await signInWithPopup(auth, googleProvider);
-  } catch (error: any) {
-    // If popup was blocked or failed on mobile browser, fallback to redirect if appropriate
-    if (error?.code === 'auth/popup-blocked') {
-      console.warn('Popup blocked by browser, trying redirect fallback...');
-      await signInWithRedirect(auth, googleProvider);
-      throw new Error('Redirecting to Google Sign-In...');
-    }
-    throw error;
+  // Directly return the popup promise - do NOT await or delay in microtasks
+  return signInWithPopup(auth, googleProvider);
+}
+
+/**
+ * Optional redirect-based Google sign in (intended for custom domains or native webviews)
+ */
+export async function signInWithGoogleRedirect(): Promise<void> {
+  if (!auth || !googleProvider) {
+    throw new Error('Firebase Authentication is not configured. Please add your VITE_FIREBASE_* environment variables.');
   }
+  await signInWithRedirect(auth, googleProvider);
 }
 
 /**
@@ -120,28 +123,49 @@ export async function signOutUser(): Promise<void> {
  * Friendly error message parser for Firebase Auth error codes
  */
 export function getFriendlyAuthErrorMessage(errorCode: string): string {
-  switch (errorCode) {
-    case 'auth/popup-closed-by-user':
-      return 'Sign-in cancelled. The Google popup was closed before completing.';
-    case 'auth/popup-blocked':
-      return 'Sign-in popup was blocked by your browser. Please allow popups for this site.';
-    case 'auth/unauthorized-domain':
-      return 'This domain (zenvio-fxo.vercel.app or localhost) is not authorized in your Firebase project. Please add it to Authorized Domains in Firebase Authentication Settings.';
-    case 'auth/user-not-found':
-    case 'auth/wrong-password':
-    case 'auth/invalid-credential':
-      return 'Invalid email or password. Please verify your credentials or sign in with Google.';
-    case 'auth/email-already-in-use':
-      return 'An account with this email address already exists. Please sign in instead.';
-    case 'auth/weak-password':
-      return 'Password should be at least 6 characters.';
-    case 'auth/invalid-email':
-      return 'Please enter a valid email address.';
-    case 'auth/operation-not-allowed':
-      return 'Google sign-in is not enabled in Firebase Console. Please enable Google provider under Authentication > Sign-in method.';
-    case 'auth/network-request-failed':
-      return 'Network connection failed. Please check your internet connection.';
-    default:
-      return 'An error occurred during authentication. Please try again.';
+  const code = (errorCode || '').toLowerCase();
+
+  if (code.includes('popup-closed-by-user')) {
+    return 'Sign-in cancelled. The Google popup was closed before completing.';
   }
+  if (code.includes('popup-blocked')) {
+    return 'Sign-in popup was blocked by your browser. Please allow popups for this site in your browser address bar and try again.';
+  }
+  if (
+    code.includes('missing-initial-state') ||
+    code.includes('missing initial state') ||
+    code.includes('storage-partitioned')
+  ) {
+    return 'Unable to process sign-in due to browser storage partitioning or strict privacy settings. Please disable third-party cookie blocking or allow popups and try again.';
+  }
+  if (code.includes('unauthorized-domain')) {
+    return 'This domain (zenvio-fxo.vercel.app or localhost) is not authorized in your Firebase project. Please add it to Authorized Domains in Firebase Authentication Settings.';
+  }
+  if (
+    code.includes('user-not-found') ||
+    code.includes('wrong-password') ||
+    code.includes('invalid-credential')
+  ) {
+    return 'Invalid email or password. Please verify your credentials or sign in with Google.';
+  }
+  if (code.includes('email-already-in-use')) {
+    return 'An account with this email address already exists. Please sign in instead.';
+  }
+  if (code.includes('weak-password')) {
+    return 'Password should be at least 6 characters.';
+  }
+  if (code.includes('invalid-email')) {
+    return 'Please enter a valid email address.';
+  }
+  if (code.includes('operation-not-allowed')) {
+    return 'Google sign-in is not enabled in Firebase Console. Please enable Google provider under Authentication > Sign-in method.';
+  }
+  if (code.includes('network-request-failed')) {
+    return 'Network connection failed. Please check your internet connection.';
+  }
+  if (code.includes('cancelled-popup-request')) {
+    return 'Another sign-in window was already open. Please complete or close it and try again.';
+  }
+
+  return 'An error occurred during authentication. Please try again.';
 }

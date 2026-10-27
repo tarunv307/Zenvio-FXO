@@ -20,18 +20,27 @@ export function SignInPage() {
   // Determine redirect target after login
   const from = (location.state as any)?.from?.pathname || '/';
 
-  const handleGoogleSignIn = async () => {
+  const handleGoogleSignIn = () => {
     setLocalError(null);
     clearError();
     setLoadingGoogle(true);
-    try {
-      await signInWithGoogle();
-      navigate(from, { replace: true });
-    } catch (err: any) {
-      setLocalError(err.message || 'Google sign-in failed.');
-    } finally {
-      setLoadingGoogle(false);
-    }
+
+    // Directly trigger popup in synchronous user gesture
+    signInWithGoogle()
+      .then(() => {
+        navigate(from, { replace: true });
+      })
+      .catch((err: any) => {
+        console.error('[SignInPage] Google sign-in failed:', err);
+        const isDev =
+          import.meta.env.DEV ||
+          (typeof window !== 'undefined' && window.location.hostname === 'localhost');
+        const codeSuffix = isDev && err?.code ? ` [Code: ${err.code}]` : '';
+        setLocalError(`${err.message || 'Google sign-in failed.'}${codeSuffix}`);
+      })
+      .finally(() => {
+        setLoadingGoogle(false);
+      });
   };
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
