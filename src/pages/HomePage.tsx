@@ -6,6 +6,7 @@ import {
 import { TOOLS, CATEGORIES, getFeaturedTools, getToolsByCategory } from '../data/tools';
 import { ToolCard, CategoryCard } from '../components/ui/Cards';
 import { SearchBar } from '../components/layout/Header';
+import { SEO } from '../components/common/SEO';
 
 // ─── Stats derived from actual data ──────────────────────────────────────────
 const LIVE_TOOLS = TOOLS.filter((t) => t.status === 'live').length;
@@ -24,18 +25,20 @@ function HeroSection() {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EFF6FF] border border-blue-200 text-[#1D4ED8] text-xs font-semibold mb-6">
           <div className="size-1.5 rounded-full bg-[#2563EB] animate-pulse" />
-          {LIVE_TOOLS} tools available • All free • No sign-up required
+          Zenvio FXO • {LIVE_TOOLS} free online tools • No sign-up required
         </div>
 
         <h1 className="text-4xl sm:text-5xl font-black text-[#0F172A] tracking-tight leading-tight">
+          <span className="block text-2xl sm:text-3xl font-extrabold text-[#2563EB] mb-1">Zenvio FXO</span>
           Everyday Tasks.
           <br />
           <span className="text-[#2563EB]">Made Effortless.</span>
         </h1>
 
         <p className="mt-5 text-lg text-[#475569] max-w-2xl mx-auto leading-relaxed">
-          Discover simple, powerful tools for images, PDFs, documents, development, learning,
-          and everyday productivity — all running in your browser.
+          Discover Zenvio FXO, an online platform for useful digital tools, including QR code generation,
+          text utilities, and productivity tools. Explore the available tools in one place — all running
+          securely in your browser.
         </p>
 
         {/* Search */}
@@ -283,8 +286,28 @@ function FAQSection() {
 // ─── Home Page ────────────────────────────────────────────────────────────────
 
 export function HomePage() {
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Zenvio FXO',
+    alternateName: ['Zenvio', 'ZenvioFXO'],
+    url: 'https://zenvio-fxo.vercel.app/',
+    description: 'Discover Zenvio FXO, an online platform for useful digital tools, including QR code generation, text utilities, and productivity tools. Explore the available tools in one place.',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: 'https://zenvio-fxo.vercel.app/tools?q={search_term_string}',
+      'query-input': 'required name=search_term_string',
+    },
+  };
+
   return (
     <>
+      <SEO
+        title="Zenvio FXO – Free Online Tools for Everyday Tasks"
+        description="Discover Zenvio FXO, an online platform for useful digital tools, including QR code generation, text utilities, and productivity tools. Explore the available tools in one place."
+        canonicalPath="/"
+        jsonLd={websiteSchema}
+      />
       <HeroSection />
       <FeaturedTools />
       <CategoriesGrid />

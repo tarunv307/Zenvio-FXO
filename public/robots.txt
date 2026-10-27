@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /auth/
+Disallow: /r/
 
-Sitemap: /sitemap.xml
+Sitemap: https://zenvio-fxo.vercel.app/sitemap.xml

@@ -10,6 +10,7 @@ import { RedirectHandler } from './pages/RedirectHandler';
 import { AuthProvider } from './context/AuthContext';
 import { SignInPage } from './pages/auth/SignInPage';
 import { SignUpPage } from './pages/auth/SignUpPage';
+import { AboutPage, PrivacyPage, TermsPage, FAQPage, ContactPage } from './pages/info/StaticPages';
 
 function PageLoader() {
   return (
@@ -39,6 +40,11 @@ export default function App() {
               <Route path="category/:categoryId" element={<CategoryPage />} />
               <Route path="auth/sign-in" element={<SignInPage />} />
               <Route path="auth/sign-up" element={<SignUpPage />} />
+              <Route path="about" element={<AboutPage />} />
+              <Route path="privacy" element={<PrivacyPage />} />
+              <Route path="terms" element={<TermsPage />} />
+              <Route path="faq" element={<FAQPage />} />
+              <Route path="contact" element={<ContactPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
           </Routes>

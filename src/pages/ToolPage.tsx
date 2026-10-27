@@ -1,7 +1,8 @@
 import React from 'react';
 import { useParams, Navigate } from 'react-router-dom';
-import { getToolBySlug } from '../data/tools';
+import { getToolBySlug, CATEGORIES } from '../data/tools';
 import { ToolPageLayout } from '../components/layout/ToolPageLayout';
+import { SEO } from '../components/common/SEO';
 
 // ── Lazy-loaded tool implementations ──────────────────────────────────────────
 const ImageCompressor       = React.lazy(() => import('./tools/ImageCompressor').then((m) => ({ default: m.ImageCompressor })));
@@ -206,10 +207,70 @@ export function ToolPage() {
     return <Navigate to="/tools" replace />;
   }
 
+  const category = CATEGORIES.find((c) => c.id === tool.category);
+
+  const toolSchema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebApplication',
+      name: tool.name,
+      description: tool.description,
+      url: `https://zenvio-fxo.vercel.app/tools/${tool.slug}`,
+      applicationCategory: 'UtilitiesApplication',
+      operatingSystem: 'All modern web browsers',
+      browserRequirements: 'Requires JavaScript. Requires HTML5.',
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+      },
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: 'https://zenvio-fxo.vercel.app/',
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Tools',
+          item: 'https://zenvio-fxo.vercel.app/tools',
+        },
+        ...(category
+          ? [
+              {
+                '@type': 'ListItem',
+                position: 3,
+                name: category.name,
+                item: `https://zenvio-fxo.vercel.app/category/${category.id}`,
+              },
+            ]
+          : []),
+        {
+          '@type': 'ListItem',
+          position: category ? 4 : 3,
+          name: tool.name,
+          item: `https://zenvio-fxo.vercel.app/tools/${tool.slug}`,
+        },
+      ],
+    },
+  ];
+
   const ToolComponent = TOOL_COMPONENTS[tool.slug];
 
   return (
     <ToolPageLayout tool={tool}>
+      <SEO
+        title={`${tool.name} – Free Online Tool | Zenvio FXO`}
+        description={`${tool.description} Free, fast, and processes directly in your browser on Zenvio FXO.`}
+        canonicalPath={`/tools/${tool.slug}`}
+        jsonLd={toolSchema}
+      />
       {ToolComponent ? (
         <React.Suspense fallback={<ToolLoadingFallback />}>
           <ToolComponent />

@@ -5,6 +5,7 @@ import { TOOLS, CATEGORIES } from '../data/tools';
 import { searchTools, filterByCategory, sortAlphabetically } from '../utils/search';
 import { ToolCard, EmptyState } from '../components/ui/Cards';
 import type { Tool } from '../types';
+import { SEO } from '../components/common/SEO';
 
 const TOOLS_PER_PAGE = 24;
 
@@ -67,8 +68,22 @@ export function AllToolsPage() {
 
   const hasFilters = query || selectedCategory || sortOrder !== 'default';
 
+  const allToolsSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'All Free Online Tools – Zenvio FXO',
+    description: 'Explore 80+ free browser-based tools on Zenvio FXO for images, PDFs, QR codes, documents, developer utilities, and student productivity.',
+    url: 'https://zenvio-fxo.vercel.app/tools',
+  };
+
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
+      <SEO
+        title="All Free Online Tools – Zenvio FXO"
+        description="Explore 80+ free browser-based tools on Zenvio FXO for images, PDFs, QR codes, documents, developer utilities, and student productivity."
+        canonicalPath="/tools"
+        jsonLd={allToolsSchema}
+      />
       {/* Page Header */}
       <div className="bg-white border-b border-[#E2E8F0]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">

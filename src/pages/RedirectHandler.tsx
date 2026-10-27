@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ExternalLink, ShieldCheck, AlertCircle, PauseCircle, ArrowRight } from 'lucide-react';
 import { getDynamicLink, recordScan, isValidDestinationUrl } from '../lib/dynamicQr';
 import type { DynamicQrLink } from '../lib/dynamicQr';
+import { SEO } from '../components/common/SEO';
 
 export function RedirectHandler() {
   const { code } = useParams<{ code: string }>();
@@ -88,6 +89,11 @@ export function RedirectHandler() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center p-4">
+      <SEO
+        title="Redirecting – Zenvio FXO"
+        description="Redirecting to your destination URL."
+        noindex={true}
+      />
       <div className="w-full max-w-md bg-white border border-[#E2E8F0] rounded-2xl shadow-card p-6 sm:p-8 text-center">
         {/* Brand header */}
         <div className="flex items-center justify-center gap-2 mb-6">

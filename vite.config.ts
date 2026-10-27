@@ -1,4 +1,5 @@
 import { defineConfig, type Plugin } from 'vitest/config';
+import { loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
@@ -6,6 +7,13 @@ function aiDevServerPlugin(): Plugin {
   return {
     name: 'ai-dev-server-middleware',
     configureServer(server) {
+      const env = loadEnv(server.config.mode || 'development', process.cwd(), '');
+      for (const [key, value] of Object.entries(env)) {
+        if (!process.env[key]) {
+          process.env[key] = value;
+        }
+      }
+
       server.middlewares.use(async (req, res, next) => {
         const rawUrl = req.url || '';
         const pathname = rawUrl.split('?')[0];

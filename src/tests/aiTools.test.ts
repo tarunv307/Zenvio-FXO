@@ -136,6 +136,7 @@ describe('AI Tools — Server-Side Validation, Security & Rate Limiting', () => 
   it('returns unconfigured status when no API key is present in environment', async () => {
     // Ensure test environment does not have keys set
     delete process.env.GEMINI_API_KEY;
+    delete process.env.VITE_GEMINI_API_KEY;
     delete process.env.OPENAI_API_KEY;
     delete process.env.AI_API_KEY;
 

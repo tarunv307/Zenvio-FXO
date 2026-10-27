@@ -314,7 +314,7 @@ export async function executeAIRequest(body: AIRequestBody): Promise<AIResponse>
   const prompt = buildPromptForTool(tool, input.trim(), options);
 
   // Check available provider keys in server environment
-  const geminiKey = process.env.GEMINI_API_KEY;
+  const geminiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
   const openaiKey = process.env.OPENAI_API_KEY || process.env.AI_API_KEY;
 
   if (!geminiKey && !openaiKey) {
@@ -328,40 +328,59 @@ export async function executeAIRequest(body: AIRequestBody): Promise<AIResponse>
 
   // 1. Try Gemini if configured
   if (geminiKey) {
-    try {
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: {
-              temperature: 0.4,
-              maxOutputTokens: 2048,
-            },
-          }),
+    const candidateModels = [
+      process.env.GEMINI_MODEL,
+      'gemini-3-flash-preview',
+      'gemini-3.1-flash-lite-preview',
+      'gemini-3.8-flash',
+      'gemini-flash-latest',
+      'gemini-1.5-flash',
+    ].filter(Boolean) as string[];
+
+    let lastError = '';
+
+    for (const model of candidateModels) {
+      try {
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }],
+              generationConfig: {
+                temperature: 0.4,
+                maxOutputTokens: 2048,
+              },
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          const errorData = await response.text();
+          lastError = `Google Gemini provider error (${response.status}): ${errorData.slice(0, 200)}`;
+          // If model is not found (404) or temporarily overloaded (503), try next available model
+          if (response.status === 404 || response.status === 503) {
+            continue;
+          }
+          return { ok: false, error: lastError };
         }
-      );
 
-      if (!response.ok) {
-        const errorData = await response.text();
-        return {
-          ok: false,
-          error: `Google Gemini provider error (${response.status}): ${errorData.slice(0, 200)}`,
-        };
+        const data: any = await response.json();
+        const outputText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        if (!outputText) {
+          return { ok: false, error: 'No output received from AI provider.' };
+        }
+
+        return { ok: true, output: outputText.trim() };
+      } catch (err: any) {
+        lastError = `Failed to connect to Gemini API: ${err.message}`;
       }
+    }
 
-      const data: any = await response.json();
-      const outputText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-
-      if (!outputText) {
-        return { ok: false, error: 'No output received from AI provider.' };
-      }
-
-      return { ok: true, output: outputText.trim() };
-    } catch (err: any) {
-      return { ok: false, error: `Failed to connect to Gemini API: ${err.message}` };
+    if (lastError && !openaiKey) {
+      return { ok: false, error: lastError };
     }
   }
 
@@ -420,7 +439,7 @@ export async function executeAIRequest(body: AIRequestBody): Promise<AIResponse>
  * Check whether server environment has an AI API key configured
  */
 export function getAIStatus(): { configured: boolean; provider: string | null } {
-  if (process.env.GEMINI_API_KEY) {
+  if (process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY) {
     return { configured: true, provider: 'Google Gemini' };
   }
   if (process.env.OPENAI_API_KEY || process.env.AI_API_KEY) {

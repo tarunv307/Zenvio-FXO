@@ -4,6 +4,7 @@ import { CATEGORIES, getToolsByCategory } from '../data/tools';
 import { ToolCard, EmptyState } from '../components/ui/Cards';
 import type { Tool, ToolCategory_ } from '../types';
 import * as Icons from 'lucide-react';
+import { SEO } from '../components/common/SEO';
 
 export function CategoryPage() {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -18,8 +19,48 @@ export function CategoryPage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const IconComponent = (Icons as any)[category.icon] || Icons.Grid;
 
+  const categorySchema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: `${category.name} – Free ${category.label} | Zenvio FXO`,
+      description: `${category.description} Free, browser-based, no sign-up required on Zenvio FXO.`,
+      url: `https://zenvio-fxo.vercel.app/category/${category.id}`,
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: 'https://zenvio-fxo.vercel.app/',
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Tools',
+          item: 'https://zenvio-fxo.vercel.app/tools',
+        },
+        {
+          '@type': 'ListItem',
+          position: 3,
+          name: category.name,
+          item: `https://zenvio-fxo.vercel.app/category/${category.id}`,
+        },
+      ],
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
+      <SEO
+        title={`${category.name} – Free ${category.label} | Zenvio FXO`}
+        description={`${category.description} Free, browser-based, no sign-up required on Zenvio FXO.`}
+        canonicalPath={`/category/${category.id}`}
+        jsonLd={categorySchema}
+      />
       {/* Category Header */}
       <div className="bg-[#EFF6FF] border-b border-[#E2E8F0]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">

@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { GoogleSignInButton } from '../../components/auth/GoogleSignInButton';
 import { Input, Button } from '../../components/ui/FormElements';
 import { Lock, Mail, Eye, EyeOff, AlertCircle, Sparkles, ShieldCheck, User } from 'lucide-react';
+import { SEO } from '../../components/common/SEO';
 
 export function SignUpPage() {
   const navigate = useNavigate();
@@ -73,6 +74,11 @@ export function SignUpPage() {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <SEO
+        title="Sign Up – Zenvio FXO"
+        description="Create your free Zenvio FXO account."
+        noindex={true}
+      />
       <div className="max-w-md w-full space-y-8">
         {/* Brand header */}
         <div className="text-center space-y-2">
