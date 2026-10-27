@@ -6,7 +6,11 @@
       "destination": "https://zenvio-fxo.firebaseapp.com/__/auth/$1"
     },
     {
-      "source": "/(.*)",
+      "source": "/api/ai/status",
+      "destination": "/api/ai"
+    },
+    {
+      "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
   ]
