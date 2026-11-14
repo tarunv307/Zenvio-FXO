@@ -6,18 +6,21 @@ export function Footer() {
   const links = {
     Tools: [
       { label: 'All Tools', to: '/tools' },
-      { label: 'AI Tools', to: '/category/aikit' },
+      { label: 'Background Remover', to: '/tools/background-remover' },
+      { label: 'Image Enhancer', to: '/tools/image-enhancer' },
+      { label: 'Image Cutout', to: '/tools/image-cutout' },
+      { label: 'Image Upscaler', to: '/tools/image-upscaler' },
       { label: 'QR Studio', to: '/tools/qr-studio' },
-      { label: 'Image Tools', to: '/category/imagekit' },
       { label: 'PDF Tools', to: '/category/pdfkit' },
-      { label: 'Developer Tools', to: '/category/devkit' },
     ],
-    Categories: [
-      { label: 'CareerKit', to: '/category/careerkit' },
-      { label: 'MediaKit', to: '/category/mediakit' },
-      { label: 'DocKit', to: '/category/dockit' },
-      { label: 'PrivacyKit', to: '/category/privacykit' },
-      { label: 'QRKit', to: '/category/qrkit' },
+    'Govt Jobs': [
+      { label: 'All Government Jobs', to: '/jobs' },
+      { label: 'Central Government', to: '/jobs/central-government' },
+      { label: 'Tamil Nadu Jobs', to: '/jobs/tamil-nadu' },
+      { label: 'Railway Recruitment', to: '/jobs/railway' },
+      { label: 'SSC Recruitment', to: '/jobs/ssc' },
+      { label: 'UPSC Recruitment', to: '/jobs/upsc' },
+      { label: 'Admit Cards & Results', to: '/jobs/admit-cards' },
     ],
     Company: [
       { label: 'About', to: '/about' },

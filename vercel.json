@@ -10,6 +10,10 @@
       "destination": "/api/ai"
     },
     {
+      "source": "/api/image/status",
+      "destination": "/api/image"
+    },
+    {
       "source": "/((?!api/).*)",
       "destination": "/index.html"
     }

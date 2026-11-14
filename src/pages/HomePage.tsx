@@ -1,12 +1,22 @@
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  ArrowRight, Image, FileText, Code2, GraduationCap,
-  Briefcase, ShieldCheck, ChevronRight, Zap, Lock, Download
+  ArrowRight, Image as ImageIcon, FileText, Code2, GraduationCap,
+  Briefcase, ShieldCheck, ChevronRight, Zap, Lock, Download,
+  Sparkles, Scissors, Maximize2, Building2, Train, CreditCard,
+  CheckCircle2, ExternalLink
 } from 'lucide-react';
 import { TOOLS, CATEGORIES, getFeaturedTools, getToolsByCategory } from '../data/tools';
 import { ToolCard, CategoryCard } from '../components/ui/Cards';
 import { SearchBar } from '../components/layout/Header';
 import { SEO } from '../components/common/SEO';
+import { JobCard } from '../components/jobs/JobCard';
+import {
+  getLatestJobs,
+  getJobsByCategory,
+  getAdmitCards,
+  getExamResults
+} from '../data/jobs';
 
 // ─── Stats derived from actual data ──────────────────────────────────────────
 const LIVE_TOOLS = TOOLS.filter((t) => t.status === 'live').length;
@@ -79,7 +89,7 @@ function HowItWorks() {
   const steps = [
     {
       number: '01',
-      icon: Image,
+      icon: ImageIcon,
       title: 'Choose a Tool',
       description: 'Browse by category or search to find the exact tool you need from our growing library.',
     },
@@ -116,6 +126,167 @@ function HowItWorks() {
               <h3 className="font-bold text-[#0F172A] mb-2">{step.title}</h3>
               <p className="text-sm text-[#475569] leading-relaxed">{step.description}</p>
             </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── AI Image Tools Section ───────────────────────────────────────────────────
+
+function AIImageToolsSection() {
+  const tools = [
+    {
+      title: 'Background Remover',
+      slug: 'background-remover',
+      description: 'Automatically remove image background with AI precision and export transparent PNGs.',
+      icon: Sparkles,
+      tag: 'Transparent PNG',
+    },
+    {
+      title: 'Image Enhancer',
+      slug: 'image-enhancer',
+      description: 'Improve image clarity, recover blurred textures, and enhance contrast automatically.',
+      icon: Sparkles,
+      tag: 'HD Clarity',
+    },
+    {
+      title: 'Image Cutout',
+      slug: 'image-cutout',
+      description: 'Isolate subjects and people from photos to create clean transparent cutout assets.',
+      icon: Scissors,
+      tag: 'Subject Isolation',
+    },
+    {
+      title: 'Image Upscaler',
+      slug: 'image-upscaler',
+      description: 'Increase image resolution with 2x and 4x super-resolution detail enhancement.',
+      icon: Maximize2,
+      tag: '2x & 4x Scale',
+    },
+  ];
+
+  return (
+    <section className="py-12 border-t border-[#E2E8F0] bg-gradient-to-b from-blue-50/30 to-transparent">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-8">
+          <div>
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-100/70 text-[#1D4ED8] text-xs font-bold mb-2">
+              <Sparkles className="size-3.5 text-[#2563EB]" /> Next-Gen Utilities
+            </div>
+            <h2 className="text-2xl font-bold text-[#0F172A]">AI Image Tools</h2>
+            <p className="mt-1 text-sm text-[#475569]">
+              Enhance, edit, and transform your images with powerful image utilities.
+            </p>
+          </div>
+          <Link
+            to="/category/imagekit"
+            className="flex items-center gap-1 text-sm font-semibold text-[#2563EB] hover:text-[#1D4ED8] transition-colors self-start sm:self-auto"
+          >
+            All Image Tools <ChevronRight className="size-4" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {tools.map((tool) => (
+            <Link
+              key={tool.slug}
+              to={`/tools/${tool.slug}`}
+              className="p-5 rounded-2xl bg-white border border-[#E2E8F0] hover:border-blue-300 hover:shadow-card-hover transition-all duration-200 group flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="size-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-[#2563EB] group-hover:scale-110 transition-transform">
+                    <tool.icon className="size-5" />
+                  </div>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-[#2563EB] border border-blue-100">
+                    {tool.tag}
+                  </span>
+                </div>
+                <h3 className="font-bold text-[#0F172A] group-hover:text-[#2563EB] transition-colors text-base mb-1.5">
+                  {tool.title}
+                </h3>
+                <p className="text-xs text-[#475569] leading-relaxed">
+                  {tool.description}
+                </p>
+              </div>
+              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center text-xs font-semibold text-[#2563EB] group-hover:text-[#1D4ED8]">
+                Open Tool <ChevronRight className="size-3.5 ml-1 transition-transform group-hover:translate-x-0.5" />
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Government Jobs Section ───────────────────────────────────────────────────
+
+function GovernmentJobsSection() {
+  const [tab, setTab] = useState<'latest' | 'tamil-nadu' | 'central' | 'railway' | 'admit-cards' | 'results'>('latest');
+
+  const jobsByTab = {
+    latest: getLatestJobs(4),
+    'tamil-nadu': getJobsByCategory('tamil-nadu').slice(0, 4),
+    central: getJobsByCategory('central-government').slice(0, 4),
+    railway: getJobsByCategory('railway').slice(0, 4),
+    'admit-cards': getAdmitCards(4),
+    results: getExamResults(4),
+  };
+
+  const currentJobs = jobsByTab[tab] || [];
+
+  return (
+    <section className="py-12 border-t border-[#E2E8F0] bg-slate-50/50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-6">
+          <div>
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100/80 text-emerald-800 text-xs font-bold mb-2">
+              <ShieldCheck className="size-3.5 text-emerald-600" /> Gazetted & Authoritative
+            </div>
+            <h2 className="text-2xl font-bold text-[#0F172A]">Government Jobs & Notifications</h2>
+            <p className="mt-1 text-sm text-[#475569]">
+              Discover the latest government job notifications, recruitment updates, admit cards, and exam results.
+            </p>
+          </div>
+          <Link
+            to="/jobs"
+            className="flex items-center gap-1 text-sm font-semibold text-[#2563EB] hover:text-[#1D4ED8] transition-colors self-start sm:self-auto"
+          >
+            View All Jobs & Notices <ChevronRight className="size-4" />
+          </Link>
+        </div>
+
+        {/* Category Filter Pills */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-6 text-xs scrollbar-none">
+          {[
+            { id: 'latest', label: 'Latest Jobs' },
+            { id: 'tamil-nadu', label: 'Tamil Nadu Jobs' },
+            { id: 'central', label: 'Central Government Jobs' },
+            { id: 'railway', label: 'Railway Jobs' },
+            { id: 'admit-cards', label: 'Admit Cards' },
+            { id: 'results', label: 'Results' },
+          ].map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setTab(item.id as any)}
+              className={`px-3.5 py-2 rounded-xl font-bold whitespace-nowrap transition-all ${
+                tab === item.id
+                  ? 'bg-[#2563EB] text-white shadow-xs'
+                  : 'bg-white border border-[#E2E8F0] text-[#64748B] hover:text-[#0F172A] hover:bg-slate-50'
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Featured Job Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {currentJobs.map((job) => (
+            <JobCard key={job.id} job={job} />
           ))}
         </div>
       </div>
@@ -309,6 +480,8 @@ export function HomePage() {
         jsonLd={websiteSchema}
       />
       <HeroSection />
+      <AIImageToolsSection />
+      <GovernmentJobsSection />
       <FeaturedTools />
       <CategoriesGrid />
       <HowItWorks />

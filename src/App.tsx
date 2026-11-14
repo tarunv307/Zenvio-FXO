@@ -12,6 +12,11 @@ import { SignInPage } from './pages/auth/SignInPage';
 import { SignUpPage } from './pages/auth/SignUpPage';
 import { AboutPage, PrivacyPage, TermsPage, FAQPage, ContactPage } from './pages/info/StaticPages';
 
+// ── Lazy-loaded Jobs Portal ──────────────────────────────────────────────────
+const JobsHomePage = React.lazy(() => import('./pages/jobs/JobsHomePage').then((m) => ({ default: m.JobsHomePage })));
+const JobCategoryPage = React.lazy(() => import('./pages/jobs/JobCategoryPage').then((m) => ({ default: m.JobCategoryPage })));
+const JobDetailPage = React.lazy(() => import('./pages/jobs/JobDetailPage').then((m) => ({ default: m.JobDetailPage })));
+
 function PageLoader() {
   return (
     <div className="min-h-[50vh] flex items-center justify-center">
@@ -38,6 +43,20 @@ export default function App() {
               <Route path="tools" element={<AllToolsPage />} />
               <Route path="tools/:slug" element={<ToolPage />} />
               <Route path="category/:categoryId" element={<CategoryPage />} />
+              
+              {/* Government Jobs Portal Routes */}
+              <Route path="jobs" element={<JobsHomePage />} />
+              <Route path="jobs/central-government" element={<JobCategoryPage categoryOverride="central-government" />} />
+              <Route path="jobs/tamil-nadu" element={<JobCategoryPage categoryOverride="tamil-nadu" />} />
+              <Route path="jobs/railway" element={<JobCategoryPage categoryOverride="railway" />} />
+              <Route path="jobs/ssc" element={<JobCategoryPage categoryOverride="ssc" />} />
+              <Route path="jobs/upsc" element={<JobCategoryPage categoryOverride="upsc" />} />
+              <Route path="jobs/banking" element={<JobCategoryPage categoryOverride="banking" />} />
+              <Route path="jobs/defence" element={<JobCategoryPage categoryOverride="defence" />} />
+              <Route path="jobs/admit-cards" element={<JobCategoryPage categoryOverride="admit-cards" />} />
+              <Route path="jobs/results" element={<JobCategoryPage categoryOverride="results" />} />
+              <Route path="jobs/:slug" element={<JobDetailPage />} />
+
               <Route path="auth/sign-in" element={<SignInPage />} />
               <Route path="auth/sign-up" element={<SignUpPage />} />
               <Route path="about" element={<AboutPage />} />

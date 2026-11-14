@@ -25,6 +25,50 @@ function aiDevServerPlugin(): Plugin {
           return;
         }
 
+        if (pathname === '/api/image/status' && req.method === 'GET') {
+          const { getImageAIStatus } = await import('./src/server/imageHandler');
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify(getImageAIStatus()));
+          return;
+        }
+
+        if (pathname === '/api/image' && req.method === 'POST') {
+          const { executeImageRequest, checkImageRateLimit } = await import('./src/server/imageHandler');
+          const clientIp = req.socket?.remoteAddress || '127.0.0.1';
+
+          if (!checkImageRateLimit(clientIp)) {
+            res.statusCode = 429;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(
+              JSON.stringify({
+                ok: false,
+                error: 'Rate limit exceeded. Maximum 15 requests per minute allowed for image utilities.',
+              })
+            );
+            return;
+          }
+
+          let bodyStr = '';
+          req.on('data', (chunk) => {
+            bodyStr += chunk;
+          });
+          req.on('end', async () => {
+            try {
+              const body = JSON.parse(bodyStr || '{}');
+              const result = await executeImageRequest(body);
+              res.statusCode =
+                !result.ok && result.configured === false ? 503 : result.ok ? 200 : 400;
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify(result));
+            } catch (err: any) {
+              res.statusCode = 500;
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ ok: false, error: err.message || 'Internal server error.' }));
+            }
+          });
+          return;
+        }
+
         if (pathname === '/api/ai' && req.method === 'POST') {
           const { executeAIRequest, checkRateLimit } = await import('./src/server/aiHandler');
           const clientIp = req.socket?.remoteAddress || '127.0.0.1';

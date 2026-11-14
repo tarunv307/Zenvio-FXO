@@ -7,9 +7,9 @@ const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, '..');
 
 const BASE_URL = 'https://zenvio-fxo.vercel.app';
-const TODAY = '2026-10-27';
+const TODAY = new Date().toISOString().split('T')[0];
 
-// Read tools.ts
+// 1. Read tools.ts
 const toolsFilePath = path.join(projectRoot, 'src', 'data', 'tools.ts');
 const toolsContent = fs.readFileSync(toolsFilePath, 'utf8');
 
@@ -35,11 +35,39 @@ for (const match of slugMatches) {
   }
 }
 
+// 2. Read Government Jobs data
+const jobsFilePath = path.join(projectRoot, 'src', 'data', 'jobs', 'curatedJobs.ts');
+let jobSlugs = [];
+if (fs.existsSync(jobsFilePath)) {
+  const jobsContent = fs.readFileSync(jobsFilePath, 'utf8');
+  const jobSlugMatches = jobsContent.matchAll(/slug:\s*'([a-z0-9_-]+)'/g);
+  for (const match of jobSlugMatches) {
+    const slug = match[1];
+    if (!jobSlugs.includes(slug)) {
+      jobSlugs.push(slug);
+    }
+  }
+}
+
+const govtJobCategories = [
+  'central-government',
+  'tamil-nadu',
+  'railway',
+  'ssc',
+  'upsc',
+  'banking',
+  'defence',
+  'admit-cards',
+  'results',
+];
+
 const urls = [
   // Homepage
   { loc: `${BASE_URL}/`, priority: '1.0', changefreq: 'daily' },
   // Tools index
   { loc: `${BASE_URL}/tools`, priority: '0.9', changefreq: 'daily' },
+  // Government Jobs Portal Home
+  { loc: `${BASE_URL}/jobs`, priority: '0.9', changefreq: 'daily' },
   // Static informative pages
   { loc: `${BASE_URL}/about`, priority: '0.6', changefreq: 'monthly' },
   { loc: `${BASE_URL}/faq`, priority: '0.6', changefreq: 'weekly' },
@@ -48,12 +76,21 @@ const urls = [
   { loc: `${BASE_URL}/contact`, priority: '0.5', changefreq: 'monthly' },
 ];
 
-// Add category pages
+// Add tool category pages
 for (const cat of categories) {
   urls.push({
     loc: `${BASE_URL}/category/${cat}`,
     priority: '0.8',
     changefreq: 'weekly',
+  });
+}
+
+// Add Government Jobs category pages
+for (const jobCat of govtJobCategories) {
+  urls.push({
+    loc: `${BASE_URL}/jobs/${jobCat}`,
+    priority: '0.8',
+    changefreq: 'daily',
   });
 }
 
@@ -63,6 +100,15 @@ for (const slug of toolSlugs) {
     loc: `${BASE_URL}/tools/${slug}`,
     priority: '0.8',
     changefreq: 'monthly',
+  });
+}
+
+// Add individual Government Job pages
+for (const slug of jobSlugs) {
+  urls.push({
+    loc: `${BASE_URL}/jobs/${slug}`,
+    priority: '0.8',
+    changefreq: 'daily',
   });
 }
 

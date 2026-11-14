@@ -5,6 +5,10 @@ import { ToolPageLayout } from '../components/layout/ToolPageLayout';
 import { SEO } from '../components/common/SEO';
 
 // ── Lazy-loaded tool implementations ──────────────────────────────────────────
+const BackgroundRemover     = React.lazy(() => import('./tools/BackgroundRemover').then((m) => ({ default: m.BackgroundRemover })));
+const ImageEnhancer         = React.lazy(() => import('./tools/ImageEnhancer').then((m) => ({ default: m.ImageEnhancer })));
+const ImageCutout           = React.lazy(() => import('./tools/ImageCutout').then((m) => ({ default: m.ImageCutout })));
+const ImageUpscaler         = React.lazy(() => import('./tools/ImageUpscaler').then((m) => ({ default: m.ImageUpscaler })));
 const ImageCompressor       = React.lazy(() => import('./tools/ImageCompressor').then((m) => ({ default: m.ImageCompressor })));
 const ImageResizer          = React.lazy(() => import('./tools/ImageResizer').then((m) => ({ default: m.ImageResizer })));
 const ImageCropper          = React.lazy(() => import('./tools/ImageCropper').then((m) => ({ default: m.ImageCropper })));
@@ -95,6 +99,10 @@ const AIReadmeGenerator     = React.lazy(() => import('./tools/ai/AIReadmeGenera
 // ─── Tool Component Map ────────────────────────────────────────────────────────
 
 const TOOL_COMPONENTS: Record<string, React.ComponentType> = {
+  'background-remover':     BackgroundRemover,
+  'image-enhancer':         ImageEnhancer,
+  'image-cutout':           ImageCutout,
+  'image-upscaler':         ImageUpscaler,
   'image-compressor':       ImageCompressor,
   'image-resizer':          ImageResizer,
   'image-cropper':          ImageCropper,

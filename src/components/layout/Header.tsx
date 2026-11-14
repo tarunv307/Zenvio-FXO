@@ -3,10 +3,11 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import {
   Search, X, Menu, ChevronDown, User, LogOut,
   Image, FileText, FileEdit, GraduationCap, Briefcase,
-  Code2, Play, ShieldCheck, QrCode, Grid3X3, Sparkles
+  Code2, Play, ShieldCheck, QrCode, Grid3X3, Sparkles,
+  Building2, Landmark, CheckCircle2
 } from 'lucide-react';
 import { TOOLS } from '../../data/tools';
-import { searchTools } from '../../utils/search';
+import { searchGlobal, GlobalSearchResultItem } from '../../utils/search';
 import { debounce } from '../../utils/file';
 import { useAuth } from '../../context/AuthContext';
 
@@ -52,9 +53,9 @@ interface SearchBarProps {
   onClose?: () => void;
 }
 
-export function SearchBar({ className = '', placeholder = 'Search tools…', onClose }: SearchBarProps) {
+export function SearchBar({ className = '', placeholder = 'Search tools, jobs, categories…', onClose }: SearchBarProps) {
   const [query, setQuery] = React.useState('');
-  const [results, setResults] = React.useState<ReturnType<typeof searchTools>>([]);
+  const [results, setResults] = React.useState<GlobalSearchResultItem[]>([]);
   const [isOpen, setIsOpen] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
@@ -63,7 +64,7 @@ export function SearchBar({ className = '', placeholder = 'Search tools…', onC
   const debouncedSearch = React.useCallback(
     debounce((q: string) => {
       if (q.trim().length < 2) { setResults([]); return; }
-      setResults(searchTools(q, TOOLS).slice(0, 8));
+      setResults(searchGlobal(q).slice(0, 8));
     }, 150),
     []
   );
@@ -75,12 +76,12 @@ export function SearchBar({ className = '', placeholder = 'Search tools…', onC
     debouncedSearch(q);
   };
 
-  const handleSelect = (slug: string) => {
+  const handleSelect = (path: string) => {
     setQuery('');
     setResults([]);
     setIsOpen(false);
     onClose?.();
-    navigate(`/tools/${slug}`);
+    navigate(path);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -97,6 +98,19 @@ export function SearchBar({ className = '', placeholder = 'Search tools…', onC
     inputRef.current?.focus();
   };
 
+  const getResultIcon = (type: GlobalSearchResultItem['type']) => {
+    switch (type) {
+      case 'govt-job':
+        return <Briefcase className="size-3.5 text-blue-600 shrink-0" aria-hidden="true" />;
+      case 'job-category':
+        return <Building2 className="size-3.5 text-amber-600 shrink-0" aria-hidden="true" />;
+      case 'tool-category':
+        return <Grid3X3 className="size-3.5 text-purple-600 shrink-0" aria-hidden="true" />;
+      default:
+        return <Search className="size-3.5 text-[#94A3B8] shrink-0" aria-hidden="true" />;
+    }
+  };
+
   return (
     <div className={`relative ${className}`}>
       <div className="relative">
@@ -106,7 +120,7 @@ export function SearchBar({ className = '', placeholder = 'Search tools…', onC
           type="search"
           role="combobox"
           aria-expanded={isOpen && results.length > 0}
-          aria-label="Search tools"
+          aria-label="Search tools, government jobs, categories"
           value={query}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
@@ -134,36 +148,54 @@ export function SearchBar({ className = '', placeholder = 'Search tools…', onC
           role="listbox"
           className="absolute top-full left-0 right-0 mt-1 bg-white border border-[#E2E8F0] rounded-xl shadow-modal z-50 overflow-hidden"
         >
-          {results.map(({ tool }) => (
+          {results.map((item) => (
             <button
-              key={tool.id}
+              key={item.id}
               role="option"
               aria-selected={false}
-              onClick={() => handleSelect(tool.slug)}
+              onClick={() => handleSelect(item.path)}
               className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-[#EFF6FF] transition-colors text-left"
             >
-              <Search className="size-3.5 text-[#94A3B8] shrink-0" aria-hidden="true" />
+              {getResultIcon(item.type)}
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-[#0F172A] truncate">{tool.name}</p>
-                <p className="text-xs text-[#64748B] truncate">{tool.description}</p>
+                <p className="text-sm font-semibold text-[#0F172A] truncate">{item.title}</p>
+                <p className="text-xs text-[#64748B] truncate">{item.description}</p>
               </div>
-              <span className="text-xs text-[#94A3B8] shrink-0 capitalize">{tool.category.replace('kit', ' Kit')}</span>
+              <span className={`text-[10.5px] font-bold px-2 py-0.5 rounded-full border shrink-0 ${
+                item.type === 'govt-job'
+                  ? 'bg-amber-50 text-amber-800 border-amber-200'
+                  : item.type === 'job-category'
+                  ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                  : item.type === 'tool-category'
+                  ? 'bg-purple-50 text-purple-700 border-purple-200'
+                  : 'bg-slate-100 text-slate-600 border-slate-200'
+              }`}>
+                {item.badge}
+              </span>
             </button>
           ))}
-          <Link
-            to={`/tools?q=${encodeURIComponent(query)}`}
-            className="flex items-center justify-center gap-2 py-2.5 border-t border-[#E2E8F0]
-              text-xs font-semibold text-[#2563EB] hover:bg-[#EFF6FF] transition-colors"
-            onClick={() => setIsOpen(false)}
-          >
-            View all results for "{query}"
-          </Link>
+          <div className="flex items-center justify-between px-3 py-2 border-t border-[#E2E8F0] bg-slate-50 text-xs">
+            <Link
+              to={`/tools?q=${encodeURIComponent(query)}`}
+              className="font-semibold text-[#2563EB] hover:underline"
+              onClick={() => setIsOpen(false)}
+            >
+              All tool results
+            </Link>
+            <Link
+              to="/jobs"
+              className="font-semibold text-[#2563EB] hover:underline"
+              onClick={() => setIsOpen(false)}
+            >
+              All government jobs
+            </Link>
+          </div>
         </div>
       )}
 
       {isOpen && query.length >= 2 && results.length === 0 && (
         <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-[#E2E8F0] rounded-xl shadow-modal z-50 p-4 text-center">
-          <p className="text-sm text-[#64748B]">No tools found for "<strong className="text-[#0F172A]">{query}</strong>"</p>
+          <p className="text-sm text-[#64748B]">No tools or jobs found for "<strong className="text-[#0F172A]">{query}</strong>"</p>
         </div>
       )}
     </div>
@@ -212,11 +244,11 @@ export function Header() {
                     : 'text-[#475569] hover:text-[#0F172A] hover:bg-slate-100'}`
                 }
               >
-                All Tools
+                Tools
               </NavLink>
 
               <NavLink
-                to="/category/aikit"
+                to="/category/imagekit"
                 className={({ isActive }) =>
                   `px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5
                   ${isActive
@@ -224,12 +256,12 @@ export function Header() {
                     : 'text-[#475569] hover:text-[#0F172A] hover:bg-slate-100'}`
                 }
               >
-                <Sparkles className="size-3.5 text-[#2563EB]" />
-                AI Tools
+                <Image className="size-3.5 text-[#2563EB]" />
+                Image Tools
               </NavLink>
 
               <NavLink
-                to="/tools/qr-studio"
+                to="/jobs"
                 className={({ isActive }) =>
                   `px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5
                   ${isActive
@@ -237,8 +269,8 @@ export function Header() {
                     : 'text-[#475569] hover:text-[#0F172A] hover:bg-slate-100'}`
                 }
               >
-                <QrCode className="size-3.5 text-[#2563EB]" />
-                QR Studio
+                <Briefcase className="size-3.5 text-[#2563EB]" />
+                Government Jobs
               </NavLink>
 
               {/* Categories Dropdown */}
@@ -326,13 +358,29 @@ export function Header() {
               <Link
                 to="/tools"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-semibold text-[#0F172A] hover:bg-[#EFF6FF] hover:text-[#2563EB]"
+                className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-[#0F172A] hover:bg-[#EFF6FF] hover:text-[#2563EB]"
               >
-                <Grid3X3 className="size-5" />
-                All Tools
+                <Grid3X3 className="size-5 text-[#2563EB]" />
+                Tools
+              </Link>
+              <Link
+                to="/category/imagekit"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-[#0F172A] hover:bg-[#EFF6FF] hover:text-[#2563EB]"
+              >
+                <Image className="size-5 text-[#2563EB]" />
+                Image Tools
+              </Link>
+              <Link
+                to="/jobs"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-[#0F172A] hover:bg-[#EFF6FF] hover:text-[#2563EB]"
+              >
+                <Briefcase className="size-5 text-[#2563EB]" />
+                Government Jobs
               </Link>
               <div className="mt-2 space-y-1">
-                <p className="px-3 py-1 text-xs font-semibold text-[#64748B] uppercase tracking-wider">Categories</p>
+                <p className="px-3 py-1 text-xs font-semibold text-[#64748B] uppercase tracking-wider">Tool Categories</p>
                 {NAV_CATEGORIES.map(({ id, label, icon: Icon, path }) => (
                   <Link
                     key={id}
