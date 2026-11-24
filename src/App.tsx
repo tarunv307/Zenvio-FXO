@@ -16,6 +16,7 @@ import { AboutPage, PrivacyPage, TermsPage, FAQPage, ContactPage } from './pages
 const JobsHomePage = React.lazy(() => import('./pages/jobs/JobsHomePage').then((m) => ({ default: m.JobsHomePage })));
 const JobCategoryPage = React.lazy(() => import('./pages/jobs/JobCategoryPage').then((m) => ({ default: m.JobCategoryPage })));
 const JobDetailPage = React.lazy(() => import('./pages/jobs/JobDetailPage').then((m) => ({ default: m.JobDetailPage })));
+const DocumentStudioPage = React.lazy(() => import('./pages/DocumentStudioPage').then((m) => ({ default: m.DocumentStudioPage })));
 
 function PageLoader() {
   return (
@@ -41,6 +42,7 @@ export default function App() {
             <Route path="/" element={<RootLayout />}>
               <Route index element={<HomePage />} />
               <Route path="tools" element={<AllToolsPage />} />
+              <Route path="document-studio" element={<DocumentStudioPage />} />
               <Route path="tools/:slug" element={<ToolPage />} />
               <Route path="category/:categoryId" element={<CategoryPage />} />
               

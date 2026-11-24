@@ -32,6 +32,13 @@ const PDFPageExtractor      = React.lazy(() => import('./tools/PDFPageExtractor'
 const ImagesToPDF           = React.lazy(() => import('./tools/ImagesToPDF').then((m) => ({ default: m.ImagesToPDF })));
 const PDFToImages           = React.lazy(() => import('./tools/PDFToImages').then((m) => ({ default: m.PDFToImages })));
 const PDFInfo               = React.lazy(() => import('./tools/PDFInfo').then((m) => ({ default: m.PDFInfo })));
+const PDFToPPTX             = React.lazy(() => import('./tools/PDFToPPTX').then((m) => ({ default: m.PDFToPPTX })));
+const PDFToWord             = React.lazy(() => import('./tools/PDFToWord').then((m) => ({ default: m.PDFToWord })));
+const WordToPDF             = React.lazy(() => import('./tools/WordToPDF').then((m) => ({ default: m.WordToPDF })));
+const PowerPointToPDF       = React.lazy(() => import('./tools/PowerPointToPDF').then((m) => ({ default: m.PowerPointToPDF })));
+const PDFToExcel            = React.lazy(() => import('./tools/PDFToExcel').then((m) => ({ default: m.PDFToExcel })));
+const HTMLToPDF             = React.lazy(() => import('./tools/HTMLToPDF').then((m) => ({ default: m.HTMLToPDF })));
+const DocumentStudio        = React.lazy(() => import('./DocumentStudioPage').then((m) => ({ default: m.DocumentStudioPage })));
 const AddPageNumbers        = React.lazy(() => import('./tools/AddPageNumbers').then((m) => ({ default: m.AddPageNumbers })));
 const PDFWatermark          = React.lazy(() => import('./tools/PDFWatermark').then((m) => ({ default: m.PDFWatermark })));
 const WordCounter           = React.lazy(() => import('./tools/WordCounter').then((m) => ({ default: m.WordCounter })));
@@ -125,6 +132,13 @@ const TOOL_COMPONENTS: Record<string, React.ComponentType> = {
   'pdf-page-extractor':     PDFPageExtractor,
   'images-to-pdf':          ImagesToPDF,
   'pdf-to-images':          PDFToImages,
+  'pdf-to-pptx':            PDFToPPTX,
+  'pdf-to-docx':            PDFToWord,
+  'word-to-pdf':            WordToPDF,
+  'powerpoint-to-pdf':      PowerPointToPDF,
+  'pdf-to-excel':           PDFToExcel,
+  'html-to-pdf':            HTMLToPDF,
+  'document-studio':        DocumentStudio,
   'pdf-info':               PDFInfo,
   'add-page-numbers':       AddPageNumbers,
   'pdf-watermark':          PDFWatermark,

@@ -4,7 +4,7 @@ import {
   ArrowRight, Image as ImageIcon, FileText, Code2, GraduationCap,
   Briefcase, ShieldCheck, ChevronRight, Zap, Lock, Download,
   Sparkles, Scissors, Maximize2, Building2, Train, CreditCard,
-  CheckCircle2, ExternalLink
+  CheckCircle2, ExternalLink, Presentation, Table, Layers
 } from 'lucide-react';
 import { TOOLS, CATEGORIES, getFeaturedTools, getToolsByCategory } from '../data/tools';
 import { ToolCard, CategoryCard } from '../components/ui/Cards';
@@ -126,6 +126,95 @@ function HowItWorks() {
               <h3 className="font-bold text-[#0F172A] mb-2">{step.title}</h3>
               <p className="text-sm text-[#475569] leading-relaxed">{step.description}</p>
             </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Document Studio Section ─────────────────────────────────────────────────
+
+function DocumentStudioSection() {
+  const tools = [
+    {
+      title: 'PDF to PowerPoint',
+      slug: 'pdf-to-pptx',
+      description: 'Convert Canva & AI PDF slides into editable PowerPoint (.pptx) decks.',
+      icon: Presentation,
+      tag: 'Preserve Layout & OCR',
+    },
+    {
+      title: 'PDF to Word',
+      slug: 'pdf-to-docx',
+      description: 'Reconstruct headings, body text, and tables in Microsoft Word format.',
+      icon: FileText,
+      tag: 'Editable DOCX',
+    },
+    {
+      title: 'Word to PDF',
+      slug: 'word-to-pdf',
+      description: 'Convert DOCX documents to standard vector PDFs with clean typography.',
+      icon: FileText,
+      tag: 'Print Ready',
+    },
+    {
+      title: 'PDF to Excel',
+      slug: 'pdf-to-excel',
+      description: 'Extract tables, financial figures, and numerical rows into spreadsheets.',
+      icon: Table,
+      tag: 'Table Extraction',
+    },
+  ];
+
+  return (
+    <section className="py-12 border-t border-[#E2E8F0] bg-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-8">
+          <div>
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-100/70 text-[#1D4ED8] text-xs font-bold mb-2">
+              <Sparkles className="size-3.5 text-[#2563EB]" /> Premium Feature
+            </div>
+            <h2 className="text-2xl font-bold text-[#0F172A]">Document Studio</h2>
+            <p className="mt-1 text-sm text-[#475569]">
+              High-fidelity document conversion hub. Built for Canva, AI presentations, and office workflows.
+            </p>
+          </div>
+          <Link
+            to="/document-studio"
+            className="flex items-center gap-1 text-sm font-semibold text-[#2563EB] hover:text-[#1D4ED8] transition-colors self-start sm:self-auto"
+          >
+            Open Document Studio Hub <ChevronRight className="size-4" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {tools.map((tool) => (
+            <Link
+              key={tool.slug}
+              to={`/tools/${tool.slug}`}
+              className="p-5 rounded-2xl bg-slate-50/60 border border-[#E2E8F0] hover:border-blue-300 hover:bg-white hover:shadow-card-hover transition-all duration-200 group flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="size-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-[#2563EB] group-hover:scale-110 transition-transform">
+                    <tool.icon className="size-5" />
+                  </div>
+                  <span className="text-[10px] font-bold text-[#2563EB] bg-blue-50 border border-blue-100/80 px-2 py-0.5 rounded-full">
+                    {tool.tag}
+                  </span>
+                </div>
+                <h3 className="text-base font-bold text-[#0F172A] group-hover:text-[#2563EB] transition-colors">
+                  {tool.title}
+                </h3>
+                <p className="mt-1 text-xs text-[#64748B] line-clamp-2">
+                  {tool.description}
+                </p>
+              </div>
+              <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-[#2563EB]">
+                Convert now <ArrowRight className="size-3 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </Link>
           ))}
         </div>
       </div>
@@ -480,6 +569,7 @@ export function HomePage() {
         jsonLd={websiteSchema}
       />
       <HeroSection />
+      <DocumentStudioSection />
       <AIImageToolsSection />
       <GovernmentJobsSection />
       <FeaturedTools />

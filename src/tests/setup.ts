@@ -1,6 +1,18 @@
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
+// Polyfill Blob.prototype.arrayBuffer in JSDOM if missing
+if (typeof Blob !== 'undefined' && !Blob.prototype.arrayBuffer) {
+  Blob.prototype.arrayBuffer = function () {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as ArrayBuffer);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsArrayBuffer(this);
+    });
+  };
+}
+
 // Mock crypto.randomUUID if not present
 if (!globalThis.crypto?.randomUUID) {
   Object.defineProperty(globalThis, 'crypto', {

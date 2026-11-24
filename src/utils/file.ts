@@ -37,9 +37,9 @@ export function downloadDataUrl(dataUrl: string, filename: string): void {
 }
 
 /**
- * Read a file as an ArrayBuffer.
+ * Read a file or blob as an ArrayBuffer.
  */
-export function readFileAsArrayBuffer(file: File): Promise<ArrayBuffer> {
+export function readFileAsArrayBuffer(file: Blob | File): Promise<ArrayBuffer> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result as ArrayBuffer);

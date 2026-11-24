@@ -248,6 +248,20 @@ export function Header() {
               </NavLink>
 
               <NavLink
+                to="/document-studio"
+                className={({ isActive }) =>
+                  `px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5
+                  ${isActive
+                    ? 'bg-[#EFF6FF] text-[#2563EB] border border-blue-200/60 shadow-xs'
+                    : 'text-[#475569] hover:text-[#0F172A] hover:bg-slate-100'}`
+                }
+              >
+                <Sparkles className="size-3.5 text-[#2563EB]" />
+                Document Studio
+                <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.2 rounded-full font-bold">New</span>
+              </NavLink>
+
+              <NavLink
                 to="/category/imagekit"
                 className={({ isActive }) =>
                   `px-3 py-1.5 rounded-lg text-sm font-semibold transition-all flex items-center gap-1.5
@@ -362,6 +376,15 @@ export function Header() {
               >
                 <Grid3X3 className="size-5 text-[#2563EB]" />
                 Tools
+              </Link>
+              <Link
+                to="/document-studio"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-[#0F172A] hover:bg-[#EFF6FF] hover:text-[#2563EB]"
+              >
+                <Sparkles className="size-5 text-[#2563EB]" />
+                Document Studio
+                <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full font-bold ml-auto">New</span>
               </Link>
               <Link
                 to="/category/imagekit"

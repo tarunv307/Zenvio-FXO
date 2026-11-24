@@ -66,6 +66,8 @@ const urls = [
   { loc: `${BASE_URL}/`, priority: '1.0', changefreq: 'daily' },
   // Tools index
   { loc: `${BASE_URL}/tools`, priority: '0.9', changefreq: 'daily' },
+  // Document Studio Hub
+  { loc: `${BASE_URL}/document-studio`, priority: '0.9', changefreq: 'daily' },
   // Government Jobs Portal Home
   { loc: `${BASE_URL}/jobs`, priority: '0.9', changefreq: 'daily' },
   // Static informative pages
