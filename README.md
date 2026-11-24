@@ -13,7 +13,25 @@
 
 ## 🚀 Key Feature Categories
 
-### 1. 🔲 QR Studio & QR Kit
+### 1. 📑 Document Studio (Premium Conversion Hub)
+- **Flagship Conversion Hub** (`/document-studio`):
+  - Built specifically to convert Canva, Gamma, Beautiful.ai, Tome, and Figma PDF exports into editable PowerPoint (`.pptx`) and Word (`.docx`) files.
+  - **Two Conversion Modes**:
+    - **Preserve Original Layout**: Locks exact slide dimensions (16:9 widescreen, 4:3, or custom), renders high-DPI backdrops, and overlays editable PowerPoint text boxes matching original coordinates.
+    - **Editable Content**: Reconstructs structured headings, body paragraphs, bullet lists, and tables into clean PowerPoint text shapes for deep editing.
+  - **Scanned Document OCR**: Client-side optical character recognition via Tesseract.js to recover text from scanned pages or flattened slide images.
+- **Dedicated Document Conversion Tools**:
+  - **PDF to PowerPoint (.pptx)** (`/tools/pdf-to-pptx`): Dual-mode slide conversion with OCR support.
+  - **PDF to Word (.docx)** (`/tools/pdf-to-docx`): Reconstructs headings, paragraphs, and formatting for Microsoft Word.
+  - **Word to PDF** (`/tools/word-to-pdf`): Converts `.docx` documents to standard vector PDFs.
+  - **PowerPoint to PDF** (`/tools/powerpoint-to-pdf`): Exports `.pptx` slides into clean widescreen 16:9 PDF documents.
+  - **PDF to Excel (.xlsx)** (`/tools/pdf-to-excel`): Extracts tabular rows, columns, and financial data into `.xlsx` spreadsheets.
+  - **PDF to PNG/JPG** (`/tools/pdf-to-images`): High-resolution 2x crisp page rendering with individual and bulk ZIP download.
+  - **Images to PDF** (`/tools/images-to-pdf`): Reorders and compiles JPG, PNG, and WebP images into one organized PDF.
+  - **HTML to PDF** (`/tools/html-to-pdf`): Converts raw HTML/CSS or HTML files into multi-page PDFs.
+  - **100% In-Browser Privacy**: All processing runs locally with WebAssembly, Canvas, and local Workers — zero document uploads to remote servers.
+
+### 2. 🔲 QR Studio & QR Kit
 - **Advanced QR Studio**:
   - High-resolution SVG and PNG exports (up to 4096px).
   - Custom dot matrix patterns (square, rounded, dots, classy).
@@ -30,7 +48,7 @@
   - Digital vCard Contact Card QR.
   - Camera-based QR Code Scanner with webcam detection and upload support.
 
-### 2. 🤖 AI Studio (15 Powered Tools)
+### 3. 🤖 AI Studio (15 Powered Tools)
 - **AI Text Summarizer**: Executive bullets, concise summaries, key insights.
 - **AI Paraphraser & Rewriter**: Professional, fluent, concise, casual rephrasing.
 - **AI Grammar & Style Checker**: Highlight and fix errors with explanations.
@@ -46,7 +64,7 @@
 - **AI Bullet Point Extractor**: Actionable takeaway lists.
 - **AI Study Notes Summarizer**: Academic concept organizers.
 
-### 3. 🖼️ Image Utilities
+### 4. 🖼️ Image Utilities
 - Image Compressor & Target Size Compressor (KB/MB budget targeting).
 - Image Resizer, Cropper & Aspect Ratio Adjuster.
 - Image Format Converter (WebP, PNG, JPEG, SVG).
@@ -55,7 +73,7 @@
 - Passport Photo Maker & Image Metadata (EXIF) Viewer.
 - Base64 to Image & Image to Base64 Converters.
 
-### 4. 📄 PDF Utilities
+### 5. 📄 PDF Utilities
 - Merge PDF, Split PDF, and Organize PDF Pages.
 - PDF Page Extractor & PDF to Images.
 - Images to PDF Maker.
@@ -63,7 +81,7 @@
 - PDF Watermark & Add Page Numbers.
 - PDF Info & Metadata Inspector.
 
-### 5. 💻 Developer & Student Productivity
+### 6. 💻 Developer & Student Productivity
 - JSON Formatter, Validator & Minifier.
 - JSON ⇄ CSV Converter.
 - JWT Decoder (Header, Payload, Token expiration checker).
@@ -81,7 +99,9 @@
 - **Frontend**: React 18, TypeScript, Vite
 - **Styling**: Tailwind CSS (Midnight Blue theme token system)
 - **Icons**: Lucide React
-- **Graphics & PDF**: Canvas API, PDF-lib, QRCode
+- **Document & PDF Engines**: PDF.js, PptxGenJS, docx, SheetJS (xlsx), Mammoth, jsPDF, html2canvas, PDF-Lib
+- **OCR Engine**: Tesseract.js (Client-side WebAssembly / Web Worker)
+- **Graphics & Utilities**: Canvas API, JSZip, QRCode
 - **Testing**: Vitest with unit test coverage
 - **Architecture**: Client-side first processing + secure rate-limited server proxy for AI integration
 
